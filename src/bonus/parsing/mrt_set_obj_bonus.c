@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mrt_set_mat.c                                      :+:      :+:    :+:   */
+/*   mrt_set_obj_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 12:08:15 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/07 09:02:43 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:16:02 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mrt_parsing.h"
+#include "mrt_parsing_bonus.h"
 
 static bool	set_mat(t_obj *obj, t_fvec3 pos, t_fvec3 rot, t_fvec3 scale)
 {
@@ -61,7 +61,7 @@ bool	set_plane_data(t_obj *plane, char **args)
 	return (set_mat(plane, pos, rot, new_fvec3(1.0, 1.0, 1.0)));
 }
 
-bool	set_cylinder_data(t_obj *cylinder, char **args)
+bool	set_revolution_data(t_obj *cylinder, char **args)
 {
 	t_fvec3	pos;
 	t_fvec3	rot;

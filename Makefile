@@ -58,7 +58,8 @@ SRCS			= $(addprefix $(SRC_MAIN_DIR)/, \
 					mrt_parsing.c \
 					mrt_scene_get.c \
 					mrt_scene_read.c \
-					mrt_set_mat.c) \
+					mrt_set_cam.c \
+					mrt_set_obj.c) \
 				$(addprefix $(RTC_DIR)/, \
 					mrt_color.c \
 					mrt_ray.c \
@@ -97,7 +98,8 @@ SRCS_BONUS		= $(addprefix $(SRC_BONUS_DIR)/, \
 					mrt_parsing_bonus.c \
 					mrt_scene_get_bonus.c \
 					mrt_scene_read_bonus.c \
-					mrt_set_mat_bonus.c) \
+					mrt_set_cam_bonus.c \
+					mrt_set_obj_bonus.c) \
 				$(addprefix $(RTC_DIR)/, \
 					mrt_color_bonus.c \
 					mrt_intensity_bonus.c \

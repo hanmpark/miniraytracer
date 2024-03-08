@@ -6,13 +6,14 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:19 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/07 15:35:34 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:23:54 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MRT_BONUS_H
 # define MRT_BONUS_H
 
+# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
@@ -20,6 +21,7 @@
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 # include "libft.h"
 # include "mlx.h"
@@ -34,12 +36,14 @@
 
 /* SCREEN PARAMETERS */
 
-# define SCR_WID 			800
-# define SCR_HGH 			800
-# define MAX_REF_RAYS		10
-# define SAMPLES_PER_PIXEL	0
-# define MIN_SAMPLES		4
-# define NUM_THREADS		4
+# define SCR_WID 			1920
+# define SCR_HGH 			1080
+# define MAX_REF_RAYS		50
+# define NUM_THREADS		16
+
+/* NOT MODIFIABLE SCREEN PARAMETER */
+
+# define SAMPLES_PER_PIXEL	4
 
 typedef struct s_amb
 {
@@ -110,6 +114,14 @@ typedef struct s_th
 	int				end_y;
 }	t_th;
 
+typedef struct s_t
+{
+	struct timeval	start_time;
+	struct timeval	end_time;
+	time_t			seconds;
+	time_t			microseconds;
+}	t_t;
+
 typedef struct s_mrt
 {
 	void	*mlx_ptr;
@@ -124,6 +136,8 @@ typedef struct s_mrt
 	t_obj	*objs;
 	int		nb_objs;
 	t_th	threads[NUM_THREADS];
+
+	t_t		t;
 }	t_mrt;
 
 #endif

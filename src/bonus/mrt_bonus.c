@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:15 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/06 16:49:28 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:22:20 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	main(int ac, char **av)
 	}
 	else if (mrt_parsing(&v, av[1]) == false)
 		return (2);
+	gettimeofday(&v.t.start_time, NULL);
 	if (launch(&v) == false)
 	{
 		free(v.lights);

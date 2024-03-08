@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:47:18 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/06 14:14:07 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:20:53 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,9 @@
  */
 t_fvec3	color_cap(t_fvec3 color)
 {
-	static const double	scale = 1.0 / SAMPLES_PER_PIXEL;
-
-	if (SAMPLES_PER_PIXEL > MIN_SAMPLES)
-	{
-		color.x = fmax(0.0, fmin(1.0, color.x * scale));
-		color.y = fmax(0.0, fmin(1.0, color.y * scale));
-		color.z = fmax(0.0, fmin(1.0, color.z * scale));
-	}
-	else
-	{
-		color.x = fmax(0.0, fmin(1.0, color.x));
-		color.y = fmax(0.0, fmin(1.0, color.y));
-		color.z = fmax(0.0, fmin(1.0, color.z));
-	}
+	color.x = fmax(0.0, fmin(1.0, color.x / SAMPLES_PER_PIXEL));
+	color.y = fmax(0.0, fmin(1.0, color.y / SAMPLES_PER_PIXEL));
+	color.z = fmax(0.0, fmin(1.0, color.z / SAMPLES_PER_PIXEL));
 	return (color);
 }
 

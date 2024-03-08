@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 00:59:59 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/06 16:57:34 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:22:06 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ bool	init_threads(t_mrt *v)
 
 int	render_threaded(t_mrt *v)
 {
-	int	i;
+	int		i;
+	double	elapsed;
 
 	i = -1;
 	mrt_mlx_clear(v);
@@ -43,5 +44,10 @@ int	render_threaded(t_mrt *v)
 	while (++i < NUM_THREADS)
 		pthread_join(v->threads[i].thread, NULL);
 	mrt_mlx_refresh(v);
+	gettimeofday(&v->t.end_time, NULL);
+	v->t.seconds = v->t.end_time.tv_sec - v->t.start_time.tv_sec;
+	v->t.microseconds = v->t.end_time.tv_usec - v->t.start_time.tv_usec;
+	elapsed = v->t.seconds + v->t.microseconds / 1e6;
+	printf("Rendering took %.2f seconds.\n", elapsed);
 	return (0);
 }

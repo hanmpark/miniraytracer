@@ -6,17 +6,12 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 23:22:24 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/07 11:33:52 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:20:18 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mrt_math_bonus.h"
 #include "mrt_render_bonus.h"
-
-double	random_double(void)
-{
-	return (rand() / (RAND_MAX + 1.0));
-}
 
 int	close_enough(double a, double b)
 {

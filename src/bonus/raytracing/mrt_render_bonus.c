@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:23:19 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/06 23:47:42 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:21:52 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,23 @@ static t_fvec3	pixel_color(t_th *clu, t_ray camray)
 
 static void	render_anti_aliasing(t_th *clu, int x, int y)
 {
-	t_fvec3	col;
-	int		sample_count;
+	const double	offs[2] = {-0.25, 0.25};
+	t_fvec3			col;
+	int				i;
+	int				j;
 
+	i = -1;
 	col = new_fvec3(0.0, 0.0, 0.0);
-	sample_count = -1;
-	while (++sample_count < SAMPLES_PER_PIXEL)
+	while (++i < 2)
 	{
-		clu->count_ref_rays = 0;
-		setup_camera_ray(clu->v, &clu->camray, (double)x, (double)y);
-		col = add_fvec3(col, pixel_color(clu, clu->camray));
+		j = -1;
+		while (++j < 2)
+		{
+			clu->count_ref_rays = 0;
+			setup_camera_ray(clu->v, &clu->camray, x + offs[i], y + offs[j]);
+			col = add_fvec3(col, pixel_color(clu, clu->camray));
+		}
 	}
-	col = color_to_byte(color_cap(col));
-	mrt_mlx_put_pixel(clu->v, x, y, mrt_color_mlx(0, col.x, col.y, col.z));
-}
-
-static void	render_simple(t_th *clu, int x, int y)
-{
-	t_fvec3	col;
-
-	clu->count_ref_rays = 0;
-	setup_camera_ray(clu->v, &clu->camray, (double)x, (double)y);
-	col = pixel_color(clu, clu->camray);
 	col = color_to_byte(color_cap(col));
 	mrt_mlx_put_pixel(clu->v, x, y, mrt_color_mlx(0, col.x, col.y, col.z));
 }
@@ -70,12 +65,7 @@ void	*render(void *arg)
 	{
 		x = -1;
 		while (++x < SCR_WID)
-		{
-			if (SAMPLES_PER_PIXEL > MIN_SAMPLES)
-				render_anti_aliasing(clu, x, y);
-			else
-				render_simple(clu, x, y);
-		}
+			render_anti_aliasing(clu, x, y);
 		y++;
 	}
 	return (NULL);

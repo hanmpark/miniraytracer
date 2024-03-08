@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:23:12 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/06 12:51:07 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:19:52 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,5 @@ t_fvec3	new_fvec3(double x, double y, double z);
 void	convert_radian(t_fvec3 *rot, bool is_cam);
 int		close_enough(double a, double b);
 double	solve_quadratic(double a, double b, double c, double ret);
-double	random_double(void);
 
 #endif

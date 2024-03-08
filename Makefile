@@ -20,7 +20,7 @@ LIBMLX_DIR		= lib/libmlx
 
 # ------------------------------- COMPILER FLAGS ------------------------------- #
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror #-g3 -fsanitize=undefined -fsanitize=address -fsanitize=thread 
+CFLAGS			= -Wall -Wextra -Werror -O3 -ffast-math
 
 UTILS_FLAGS		= -lm
 ifdef BONUS

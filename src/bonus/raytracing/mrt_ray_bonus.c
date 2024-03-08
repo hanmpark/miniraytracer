@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 19:56:40 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/07 15:44:55 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:21:18 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@ void	setup_camera_ray(t_mrt *v, t_ray *camray, double x, double y)
 
 	x = x * scr_xinv2 - 1.0;
 	y = y * scr_yinv2 - 1.0;
-	if (SAMPLES_PER_PIXEL > MIN_SAMPLES)
-	{
-		x += (-0.5 + random_double()) * scr_xinv2;
-		y += (-0.5 + random_double()) * scr_yinv2;
-	}
 	camray->pos = v->cam.pos;
 	camray->dir = add_fvec3(\
 					add_fvec3(\

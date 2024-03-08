@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:19 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 17:05:59 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:38:56 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 
 # define SCR_WID 			1920
 # define SCR_HGH 			1080
-# define MAX_REF_RAYS		50
+# define MAX_REF_RAYS		100
 # define NUM_THREADS		16
 
 /* NOT MODIFIABLE SCREEN PARAMETER */

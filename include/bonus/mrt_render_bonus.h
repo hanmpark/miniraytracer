@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:55:26 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 16:42:40 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:36:43 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define SPH_CYLINDER_CHECKER	3
 # define SPH_CONE_CHECKER		6
 
-# define PLANE_CHECKER			1
+# define PLANE_CHECKER			0.4
 # define PL_CYLINDER_CHECKER	3
 # define PL_CONE_CHECKER		5
 

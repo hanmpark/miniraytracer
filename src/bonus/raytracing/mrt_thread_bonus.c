@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 00:59:59 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 17:06:51 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/09 00:10:04 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,17 @@ int	render_threaded(t_mrt *v)
 	while (++i < NUM_THREADS)
 		pthread_create(&v->threads[i].thread, NULL, render, &v->threads[i]);
 	i = -1;
-	while (v->finished_thread != NUM_THREADS)
+	while (++i < NUM_THREADS)
+		pthread_detach(v->threads[i].thread);
+	while (1)
+	{
+		pthread_mutex_lock(&v->count_mutex);
+		if (v->finished_thread == NUM_THREADS)
+			break ;
+		pthread_mutex_unlock(&v->count_mutex);
 		mrt_mlx_refresh(v);
+	}
+	pthread_mutex_unlock(&v->count_mutex);
 	pthread_mutex_destroy(&v->count_mutex);
 	printf("Rendering took %.2f seconds.\n", get_time_seconds() - start);
 	return (0);

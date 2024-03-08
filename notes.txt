@@ -1,4 +1,0 @@
-TODO
-bug cone, cylinder
-Comment functions
-Test fsanitize overflow + leaks

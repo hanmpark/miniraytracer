@@ -45,7 +45,7 @@ void		*mlx_int_xpm_f_image(t_xvar *xvar,int *width,int *height,
       XDestroyImage(img1);
       return (im2);
     }
-  if (im2->type==MLX_TYPE_SHM_PIXMAP)
+  if (im2->type==MLX_TYPE_SHPIXMAP)
     {
       XFreePixmap(xvar->display,im2->pix);
       im2->pix = XCreatePixmap(xvar->display,xvar->root,

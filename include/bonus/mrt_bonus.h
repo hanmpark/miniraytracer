@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:19 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 17:38:56 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:41:33 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,21 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdbool.h>
-# include <X11/X.h>
-# include <X11/keysym.h>
+// # include <X11/X.h>
+// # include <X11/keysym.h>
 # include <pthread.h>
 # include <sys/time.h>
 
 # include "libft.h"
 # include "mlx.h"
 # include "mrt_math_bonus.h"
+
+/* ESC BUTTON */
+# ifdef __APPLE__
+#  define KEY_ESC 53
+# elif defined __unix__
+#  define KEY_ESC 65307
+# endif
 
 /* PRINT COLORS */
 
@@ -36,10 +43,10 @@
 
 /* SCREEN PARAMETERS */
 
-# define SCR_WID 			1920
-# define SCR_HGH 			1080
+# define SCR_WID 			1200
+# define SCR_HGH 			800
 # define MAX_REF_RAYS		100
-# define NUM_THREADS		16
+# define NUM_THREADS		6
 
 /* NOT MODIFIABLE SCREEN PARAMETER */
 

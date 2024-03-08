@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 15:23:12 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 14:19:52 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:15:01 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdbool.h>
 
 # define EPSILON		0.00001
-# define M_PI			3.14159265358979323846
+# define PI			3.14159265358979323846
 # define SHADOW_BIAS	0.001
 
 typedef enum e_mat_enum

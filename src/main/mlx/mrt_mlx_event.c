@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:47:14 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 16:47:54 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:33:26 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ static int	event_destroy(t_mrt *v)
 
 static int	event_keyboard(int keycode, t_mrt *v)
 {
-	if (keycode == XK_Escape)
+	if (keycode == KEY_ESC)
 		event_destroy(v);
 	return (0);
 }
 
 void	set_mrt_mlx_hook(t_mrt *v)
 {
-	mlx_hook(v->mlx_win, DestroyNotify, SubstructureNotifyMask, \
-			&event_destroy, v);
-	mlx_hook(v->mlx_win, KeyPress, KeyPressMask, &event_keyboard, v);
-	mlx_hook(v->mlx_win, Expose, ExposureMask, &render_screen, v);
+	render_screen(v);
+	mlx_hook(v->mlx_win, 17, 0, &event_destroy, v);
+	mlx_hook(v->mlx_win, 2, 0, &event_keyboard, v);
+	// mlx_hook(v->mlx_win, Expose, ExposureMask, &render_screen, v);
 	mlx_loop(v->mlx_ptr);
 }

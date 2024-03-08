@@ -89,7 +89,7 @@ void	*mlx_int_new_xshm_image(t_xvar *xvar,int width,int height,int format)
     {
       img->pix = XShmCreatePixmap(xvar->display,xvar->root,img->shm.shmaddr,
 				  &(img->shm),width,height,xvar->depth);
-      img->type = MLX_TYPE_SHM_PIXMAP;
+      img->type = MLX_TYPE_SHPIXMAP;
     }
   else
     {

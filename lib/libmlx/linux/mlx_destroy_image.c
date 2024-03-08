@@ -14,7 +14,7 @@
 
 int	mlx_destroy_image(t_xvar *xvar, t_img *img)
 {
-  if (img->type == MLX_TYPE_SHM_PIXMAP ||
+  if (img->type == MLX_TYPE_SHPIXMAP ||
       img->type == MLX_TYPE_SHM)
     {
       XShmDetach(xvar->display, &(img->shm));

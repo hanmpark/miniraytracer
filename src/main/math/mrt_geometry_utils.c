@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 23:22:24 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/07 11:33:26 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:15:01 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	convert_radian(t_fvec3 *rot, bool is_cam)
 		if (rot->z >= 0.0 && close_enough(rot->z, 0.5))
 			rot->z -= 0.01;
 	}
-	rot->x *= M_PI;
-	rot->y *= M_PI;
-	rot->z *= M_PI;
+	rot->x *= PI;
+	rot->y *= PI;
+	rot->z *= PI;
 }
 
 double	solve_quadratic(double a, double b, double c, double ret)

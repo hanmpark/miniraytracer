@@ -24,10 +24,10 @@ double	light_intensity(t_mrt *v, t_light light, t_hit hit)
 	if (cast_light_ray(v, light, lightray, hit))
 	{
 		intensity = acos(dot_fvec3(hit.close_normal, lightdir));
-		if (intensity > (M_PI / 2.0))
+		if (intensity > (PI / 2.0))
 			intensity = 0.0;
 		else
-			intensity = (1.0 - (2.0 * intensity / M_PI));
+			intensity = (1.0 - (2.0 * intensity / PI));
 	}
 	return (intensity);
 }

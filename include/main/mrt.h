@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:19 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/07 15:20:34 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:24:51 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,19 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdbool.h>
-# include <X11/X.h>
-# include <X11/keysym.h>
+// # include <X11/X.h>
+// # include <X11/keysym.h>
 
 # include "libft.h"
 # include "mlx.h"
 # include "mrt_math.h"
+
+/* ESC BUTTON */
+# ifdef __APPLE__
+#  define KEY_ESC 53
+# elif defined __unix__
+#  define KEY_ESC 65307
+# endif
 
 /* PRINT COLORS */
 

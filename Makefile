@@ -16,18 +16,26 @@ RTC_DIR			= raytracing
 LIBFT_DIR		= lib/libft
 LIBFT_INC_DIR	= $(LIBFT_DIR)/include
 
-LIBMLX_DIR		= lib/libmlx
+ifeq ($(shell uname), Linux)
+	LIBMLX_DIR	= lib/libmlx/linux
+else
+	LIBMLX_DIR	= lib/libmlx/macos
+endif
 
 # ------------------------------- COMPILER FLAGS ------------------------------- #
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -O3 -ffast-math
 
-UTILS_FLAGS		= -lm
+UTILS_FLAGS		= -lm -Llib -lft
 ifdef BONUS
 	UTILS_FLAGS	+= -lpthread
 endif
 
-MLX_FLAGS		= -lmlx -lXext -lX11
+ifeq ($(shell uname), Linux)
+	MLX_FLAGS	= -lmlx -lXext -lX11
+else
+	MLX_FLAGS	= -lmlx -framework openGL -framework AppKit
+endif
 
 # ----------------------------------- FILES ------------------------------------ #
 SRCS			= $(addprefix $(SRC_MAIN_DIR)/, \
@@ -136,7 +144,7 @@ NAME			= miniRT
 all:			libft mlx $(NAME)
 
 $(NAME):		$(OBJS)
-				$(CC) $(CFLAGS) $(OBJS) $(UTILS_FLAGS) -Llib -lft -L$(LIBMLX_DIR) $(MLX_FLAGS) -o $@
+				$(CC) $(CFLAGS) $(OBJS) $(UTILS_FLAGS) -L$(LIBMLX_DIR) $(MLX_FLAGS) -o $@
 
 libft:
 				$(MAKE) -C $(LIBFT_DIR)

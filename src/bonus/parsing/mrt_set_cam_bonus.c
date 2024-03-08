@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:15:46 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 16:25:28 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:15:01 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	set_cam_screen(t_cam *cam)
 	static const double	scr_ratio = (double)SCR_WID / (double)SCR_HGH;
 	double				fov;
 
-	fov = cam->fov * (M_PI / 180.0);
+	fov = cam->fov * (PI / 180.0);
 	cam->prj_u = mult_double_fvec3(\
 					norm_fvec3(cross_fvec3(cam->align, cam->up)), \
 					fov);

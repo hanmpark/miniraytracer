@@ -33,7 +33,7 @@
 /* #include	<X11/xpm.h> */
 
 
-# define MLX_TYPE_SHM_PIXMAP 3
+# define MLX_TYPE_SHPIXMAP 3
 # define MLX_TYPE_SHM 2
 # define MLX_TYPE_XIMAGE 1
 

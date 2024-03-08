@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 22:20:58 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 23:53:35 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/09 00:18:04 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	event_destroy(t_mrt *v)
 {
-	pthread_mutex_destroy(&v->count_mutex);
 	free(v->lights);
 	free(v->objs);
 	mlx_destroy_image(v->mlx_ptr, v->mlx_img.img);

@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:15 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 15:36:43 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:58:33 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,28 @@ static bool	free_launch(t_mrt *v, bool destroy_windows)
 	mlx_destroy_display(v->mlx_ptr);
 	free(v->mlx_ptr);
 	return (error_bool(ERR_MLX));
+}
+
+bool	init_threads(t_mrt *v)
+{
+	static const double	sliceheight = SCR_HGH / NUM_THREADS;
+	int					i;
+
+	i = 0;
+	v->finished_thread = 0;
+	while (i < NUM_THREADS)
+	{
+		v->threads[i].v = v;
+		v->threads[i].count_ref_rays = 0;
+		v->threads[i].start_y = i * sliceheight;
+		v->threads[i].end_y = (i + 1) * sliceheight;
+		if (i == NUM_THREADS - 1)
+			v->threads[i].end_y = SCR_HGH;
+		i++;
+	}
+	if (pthread_mutex_init(&v->count_mutex, NULL))
+		return (false);
+	return (true);
 }
 
 static bool	launch(t_mrt *v)
@@ -57,7 +79,6 @@ int	main(int ac, char **av)
 	}
 	else if (mrt_parsing(&v, av[1]) == false)
 		return (2);
-	gettimeofday(&v.t.start_time, NULL);
 	if (launch(&v) == false)
 	{
 		free(v.lights);

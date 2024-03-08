@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:19 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 15:32:09 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:54:21 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,6 @@ typedef struct s_th
 	int				end_y;
 }	t_th;
 
-typedef struct s_t
-{
-	struct timeval	start_time;
-	struct timeval	end_time;
-	time_t			seconds;
-	time_t			microseconds;
-}	t_t;
-
 typedef struct s_mrt
 {
 	void			*mlx_ptr;
@@ -138,8 +130,6 @@ typedef struct s_mrt
 	t_th			threads[NUM_THREADS];
 	size_t			finished_thread;
 	pthread_mutex_t	count_mutex;
-
-	t_t				t;
 }	t_mrt;
 
 #endif

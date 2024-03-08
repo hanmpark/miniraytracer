@@ -6,39 +6,26 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 00:59:59 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 15:36:29 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:58:20 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mrt_render_bonus.h"
 
-bool	init_threads(t_mrt *v)
+static double	get_time_seconds(void)
 {
-	static const double	sliceheight = SCR_HGH / NUM_THREADS;
-	int					i;
+	struct timeval	t;
 
-	i = 0;
-	v->finished_thread = 0;
-	while (i < NUM_THREADS)
-	{
-		v->threads[i].v = v;
-		v->threads[i].count_ref_rays = 0;
-		v->threads[i].start_y = i * sliceheight;
-		v->threads[i].end_y = (i + 1) * sliceheight;
-		if (i == NUM_THREADS - 1)
-			v->threads[i].end_y = SCR_HGH;
-		i++;
-	}
-	if (pthread_mutex_init(&v->count_mutex, NULL))
-		return (false);
-	return (true);
+	gettimeofday(&t, NULL);
+	return (t.tv_sec + t.tv_usec / 1e6);
 }
 
 int	render_threaded(t_mrt *v)
 {
+	double	start;
 	int		i;
-	double	elapsed;
 
+	start = get_time_seconds();
 	i = -1;
 	mrt_mlx_clear(v);
 	while (++i < NUM_THREADS)
@@ -47,10 +34,6 @@ int	render_threaded(t_mrt *v)
 	while (v->finished_thread != NUM_THREADS)
 		mrt_mlx_refresh(v);
 	pthread_mutex_destroy(&v->count_mutex);
-	gettimeofday(&v->t.end_time, NULL);
-	v->t.seconds = v->t.end_time.tv_sec - v->t.start_time.tv_sec;
-	v->t.microseconds = v->t.end_time.tv_usec - v->t.start_time.tv_usec;
-	elapsed = v->t.seconds + v->t.microseconds / 1e6;
-	printf("Rendering took %.2f seconds.\n", elapsed);
+	printf("Rendering took %.2f seconds.\n", get_time_seconds() - start);
 	return (0);
 }

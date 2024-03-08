@@ -24,7 +24,7 @@ endif
 
 # ------------------------------- COMPILER FLAGS ------------------------------- #
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -O3 -ffast-math -fsanitize=thread -g3
+CFLAGS			= -Wall -Wextra -Werror -O3 -ffast-math
 
 UTILS_FLAGS		= -lm -Llib -lft
 ifdef BONUS

@@ -1,0 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mrt_checker_bonus.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/04 14:45:01 by hanmpark          #+#    #+#             */
+/*   Updated: 2024/03/07 12:45:16 by hanmpark         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "mrt_render_bonus.h"
+
+void	compute_spheric_uv(t_hit *hit, t_fvec3 ray, t_type type)
+{
+	if (type == SPHERE)
+	{
+		hit->fuv.u = atan(sqrt(pow(ray.x, 2.0) + pow(ray.y, 2.0)) / ray.z) / \
+			M_PI * SPHERE_CHECKER;
+		hit->fuv.v = atan(ray.y / ray.x);
+		if (ray.x < 0)
+			hit->fuv.v += M_PI;
+		hit->fuv.v /= M_PI / SPHERE_CHECKER;
+	}
+	else if (type == CYLINDER)
+	{
+		hit->fuv.u = atan2(ray.y, ray.x) * SPH_CYLINDER_CHECKER;
+		hit->fuv.v = ray.z * SPH_CYLINDER_CHECKER;
+	}
+	else if (type == CONE)
+	{
+		hit->fuv.u = atan2(ray.y, ray.x) / (M_PI / 2.0) * SPH_CONE_CHECKER;
+		hit->fuv.v = ray.z * 2.0 + 1.0;
+		if (ray.x < 0)
+			hit->fuv.v += M_PI;
+		hit->fuv.v /= M_PI / SPH_CONE_CHECKER;
+	}
+}
+
+void	compute_planar_uv(t_hit *hit, t_fvec3 ray, t_type type)
+{
+	if (type == PLANE)
+	{
+		hit->fuv.u = ray.x * PLANE_CHECKER;
+		hit->fuv.v = ray.y * PLANE_CHECKER;
+	}
+	else if (type == CYLINDER)
+	{
+		hit->fuv.u = ray.x * PL_CYLINDER_CHECKER;
+		hit->fuv.v = ray.y * PL_CYLINDER_CHECKER;
+	}
+	else if (type == CONE)
+	{
+		hit->fuv.u = ray.x * PL_CONE_CHECKER;
+		hit->fuv.v = ray.y * PL_CONE_CHECKER;
+	}
+}

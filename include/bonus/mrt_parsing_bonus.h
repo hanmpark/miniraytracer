@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 12:55:23 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 16:17:17 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:25:49 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ bool	read_rt_scene(t_mrt *obj, char **rt);
 bool	parse_amb(t_mrt *v, char **args, int *o, int *l);
 bool	parse_cam(t_mrt *v, char **args, int *o, int *l);
 void	set_cam_data(t_cam *cam);
+void	set_cam_screen(t_cam *cam);
 bool	parse_light(t_mrt *v, char **args, int *o, int *l);
 
 /* OBJECTS */

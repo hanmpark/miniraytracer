@@ -2,6 +2,9 @@
 ## Introduction
 The core objective is to create a program capable of rendering 3D scenes by simulating the way light interacts with objects, using ray tracing techniques. This method offers a deep understanding of fundamental graphics concepts such as lighting models, shadows, reflections, and more, providing a solid foundation in both the theory and application of computer graphics.
 
+Here is an example of what our miniRT can do:
+![miniRT](https://github.com/hanmpark/miniraytracer/blob/master/minirt_bonus.png)
+
 ## Features
 
 ### Mandatory Part

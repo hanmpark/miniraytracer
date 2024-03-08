@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:19 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 15:54:21 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:05:59 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,11 @@ typedef struct s_hit
 
 typedef struct s_th
 {
+	int				id;
 	struct s_mrt	*v;
 	pthread_t		thread;
 	t_ray			camray;
 	int				count_ref_rays;
-	int				start_y;
-	int				end_y;
 }	t_th;
 
 typedef struct s_mrt

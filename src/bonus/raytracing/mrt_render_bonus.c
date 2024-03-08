@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:23:19 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 15:38:24 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:09:38 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,12 @@ void	*render(void *arg)
 	int		y;
 
 	clu = (t_th *)arg;
-	y = clu->start_y;
-	while (y < clu->end_y)
+	y = -1;
+	while (clu->id + (++y * NUM_THREADS) < SCR_HGH)
 	{
 		x = -1;
 		while (++x < SCR_WID)
-			render_anti_aliasing(clu, x, y);
-		y++;
+			render_anti_aliasing(clu, x, clu->id + (y * NUM_THREADS));
 	}
 	pthread_mutex_lock(&clu->v->count_mutex);
 	clu->v->finished_thread++;

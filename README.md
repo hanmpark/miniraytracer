@@ -1,6 +1,6 @@
 # miniRT 💫
 ## Introduction
-miniRT is a concise and efficient ray tracing project developed as part of the 42 school's common core curriculum. This project showcases the fundamental concepts of ray tracing by rendering basic geometric shapes like spheres, cylinders, and infinite planes. It is divided into a mandatory part and an enhanced bonus part, offering a deeper dive into the complexities of computer graphics.
+The core objective is to create a program capable of rendering 3D scenes by simulating the way light interacts with objects, using ray tracing techniques. This method offers a deep understanding of fundamental graphics concepts such as lighting models, shadows, reflections, and more, providing a solid foundation in both the theory and application of computer graphics.
 
 ## Features
 
@@ -16,6 +16,9 @@ miniRT is a concise and efficient ray tracing project developed as part of the 4
 - **New Object - Cone**: Introduce an additional geometric shape for more complex scenes.
 - **Enhanced Lighting**: Support for colored and multiple light sources.
 - **Textures**: Apply a checker texture to any object for added visual detail.
+
+## Project Impact
+This project not only demystifies the process behind generating photorealistic images but also sharpens problem-solving and software engineering skills. It challenges students to apply complex mathematical concepts and optimize algorithms for performance, preparing them for future endeavors in computer graphics and beyond. The incorporation of bonus features showcases the ability to extend beyond the basics, implementing sophisticated techniques that are crucial in professional graphics software.
 
 ## Installation
 

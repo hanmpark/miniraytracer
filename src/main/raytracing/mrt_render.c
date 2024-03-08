@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 21:40:26 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/06 23:49:09 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:38:24 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	render_scene(t_mrt *v, int x, int y)
 	{
 		if (hit_object(&v->objs[i], v->cam.ray, &hit))
 		{
-			color = raytracing(v, hit);
+			color = raytracing_color(v, hit);
 			mrt_mlx_put_pixel(v, x, y, \
 				mrt_color_mlx(0, color.x, color.y, color.z));
 		}

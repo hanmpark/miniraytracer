@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 11:05:03 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/07 13:22:44 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:38:24 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static double	light_intensity(t_mrt *v, t_hit hit)
 	return (intensity);
 }
 
-t_fvec3	raytracing(t_mrt *v, t_hit hit)
+t_fvec3	raytracing_color(t_mrt *v, t_hit hit)
 {
 	t_fvec3	color_light;
 	t_fvec3	amb;

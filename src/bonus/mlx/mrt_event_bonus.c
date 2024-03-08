@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 22:20:58 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/06 16:49:22 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:31:16 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	event_keyboard(int keycode, t_mrt *v)
 
 int	event_destroy(t_mrt *v)
 {
+	pthread_mutex_destroy(&v->count_mutex);
 	free(v->lights);
 	free(v->objs);
 	mlx_destroy_image(v->mlx_ptr, v->mlx_img.img);

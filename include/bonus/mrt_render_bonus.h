@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:55:26 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/07 15:44:18 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:38:24 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	mrt_mlx_clear(t_mrt *v);
 /* RAY TRACING */
 
 void	*render(void *arg);
-t_fvec3	raytracing(t_th *clu, t_ray incident_ray, t_hit hit);
+t_fvec3	raytracing_color(t_th *clu, t_ray incident_ray, t_hit hit);
 double	light_intensity(t_mrt *v, t_light light, t_hit hit);
 double	specular_intensity(t_mrt *v, t_light light, t_ray inc_ray, t_hit hit);
 

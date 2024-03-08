@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:19 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 14:23:54 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:32:09 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,20 +124,22 @@ typedef struct s_t
 
 typedef struct s_mrt
 {
-	void	*mlx_ptr;
-	void	*mlx_win;
-	t_img	mlx_img;
+	void			*mlx_ptr;
+	void			*mlx_win;
+	t_img			mlx_img;
 
-	t_amb	amb;
-	t_cam	cam;
-	t_light	*lights;
-	int		nb_lights;
+	t_amb			amb;
+	t_cam			cam;
+	t_light			*lights;
+	int				nb_lights;
 
-	t_obj	*objs;
-	int		nb_objs;
-	t_th	threads[NUM_THREADS];
+	t_obj			*objs;
+	int				nb_objs;
+	t_th			threads[NUM_THREADS];
+	size_t			finished_thread;
+	pthread_mutex_t	count_mutex;
 
-	t_t		t;
+	t_t				t;
 }	t_mrt;
 
 #endif

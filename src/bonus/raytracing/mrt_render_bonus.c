@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 18:23:19 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 14:21:52 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:38:24 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_fvec3	pixel_color(t_th *clu, t_ray camray)
 	while (i < clu->v->nb_objs)
 	{
 		if (hit_object(&clu->v->objs[i], camray, &hit))
-			color = raytracing(clu, camray, hit);
+			color = raytracing_color(clu, camray, hit);
 		i++;
 	}
 	return (color);
@@ -68,5 +68,8 @@ void	*render(void *arg)
 			render_anti_aliasing(clu, x, y);
 		y++;
 	}
+	pthread_mutex_lock(&clu->v->count_mutex);
+	clu->v->finished_thread++;
+	pthread_mutex_unlock(&clu->v->count_mutex);
 	return (NULL);
 }

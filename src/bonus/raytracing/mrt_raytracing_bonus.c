@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 11:05:03 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/06 15:08:40 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:38:24 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,14 @@ static t_fvec3	compute_reflection_color(t_th *clu, t_ray inc_ray, t_hit hit)
 	{
 		clu->count_ref_rays++;
 		if (hit.close_obj->reflection > 0.0)
-			reflection_color = raytracing(clu, reflection_ray, hit);
+			reflection_color = raytracing_color(clu, reflection_ray, hit);
 		else
 			reflection_color = compute_diffuse_color(clu->v, hit);
 	}
 	return (reflection_color);
 }
 
-t_fvec3	raytracing(t_th *clu, t_ray incident_ray, t_hit hit)
+t_fvec3	raytracing_color(t_th *clu, t_ray incident_ray, t_hit hit)
 {
 	t_fvec3	diffuse_color;
 	t_fvec3	reflection_color;

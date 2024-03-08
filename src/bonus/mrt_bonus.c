@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:15 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 14:22:20 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:36:43 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	free_launch(t_mrt *v, bool destroy_windows)
 static bool	launch(t_mrt *v)
 {
 	if (!init_threads(v))
-		return (false);
+		return (error_bool(ERR_MUTEX_INIT));
 	v->mlx_ptr = mlx_init();
 	if (v->mlx_ptr == NULL)
 		return (error_bool(ERR_MLX));

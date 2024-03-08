@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:03:37 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/07 09:54:03 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:36:58 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@
 # define ERR_RATIO "Error\nRatio must be within [0.0, 1.0]\n"
 # define ERR_BOOL "Error\nBool must be in the range [-1, 1]\n"
 # define ERR_SPECULAR "Error\nShininess [0, 10] Reflection [0, 1]\n"
+
+/* THREADS */
+
+# define ERR_MUTEX_INIT "Error\nFailed to initialize mutex\n"
 
 /* USAGE */
 

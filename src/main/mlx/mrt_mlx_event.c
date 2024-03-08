@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:47:14 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 23:33:26 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:53:09 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ void	set_mrt_mlx_hook(t_mrt *v)
 	render_screen(v);
 	mlx_hook(v->mlx_win, 17, 0, &event_destroy, v);
 	mlx_hook(v->mlx_win, 2, 0, &event_keyboard, v);
-	// mlx_hook(v->mlx_win, Expose, ExposureMask, &render_screen, v);
+	mlx_key_hook(v->mlx_win, event_keyboard, (void *)v);
 	mlx_loop(v->mlx_ptr);
 }

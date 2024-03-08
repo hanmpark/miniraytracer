@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:21:44 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 16:46:45 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 23:55:52 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static bool	free_launch(t_mrt *v, bool destroy_windows)
 {
 	if (destroy_windows == true)
 		mlx_destroy_window(v->mlx_ptr, v->mlx_win);
-	mlx_destroy_display(v->mlx_ptr);
 	free(v->mlx_ptr);
 	return (error_bool(ERR_MLX));
 }

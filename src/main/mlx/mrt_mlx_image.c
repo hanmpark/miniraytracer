@@ -6,20 +6,12 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:48:04 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 16:48:25 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:46:53 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mrt_render.h"
 
-/*
- * mrt_color_mlx
- * -------------
- * Packs RGBA color components into a single integer value suitable for use
- * with MiniLibX. The function takes individual 8-bit unsigned integers
- * for transparency (t), red (r), green (g), and blue (b) components
- * and combines them into a single 32-bit integer.
- */
 int	mrt_color_mlx(unsigned char t, unsigned char r, \
 	unsigned char g, unsigned char b)
 {

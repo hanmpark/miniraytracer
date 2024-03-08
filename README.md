@@ -4,6 +4,7 @@ The core objective is to create a program capable of rendering 3D scenes by simu
 
 Here is an example of what our miniRT can do:
 ![miniRT](https://github.com/hanmpark/miniraytracer/blob/master/minirt_bonus.png)
+![miniRT](https://github.com/hanmpark/miniraytracer/blob/master/objects.png)
 
 ## Features
 

@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 06:27:15 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/08 15:58:33 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:39:17 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,57 +14,13 @@
 #include "mrt_parsing_bonus.h"
 #include "mrt_render_bonus.h"
 
-static bool	free_launch(t_mrt *v, bool destroy_windows)
-{
-	if (destroy_windows == true)
-		mlx_destroy_window(v->mlx_ptr, v->mlx_win);
-	mlx_destroy_display(v->mlx_ptr);
-	free(v->mlx_ptr);
-	return (error_bool(ERR_MLX));
-}
-
-bool	init_threads(t_mrt *v)
-{
-	static const double	sliceheight = SCR_HGH / NUM_THREADS;
-	int					i;
-
-	i = 0;
-	v->finished_thread = 0;
-	while (i < NUM_THREADS)
-	{
-		v->threads[i].v = v;
-		v->threads[i].count_ref_rays = 0;
-		v->threads[i].start_y = i * sliceheight;
-		v->threads[i].end_y = (i + 1) * sliceheight;
-		if (i == NUM_THREADS - 1)
-			v->threads[i].end_y = SCR_HGH;
-		i++;
-	}
-	if (pthread_mutex_init(&v->count_mutex, NULL))
-		return (false);
-	return (true);
-}
-
 static bool	launch(t_mrt *v)
 {
 	if (!init_threads(v))
-		return (error_bool(ERR_MUTEX_INIT));
-	v->mlx_ptr = mlx_init();
-	if (v->mlx_ptr == NULL)
-		return (error_bool(ERR_MLX));
-	v->mlx_win = mlx_new_window(v->mlx_ptr, SCR_WID, SCR_HGH, "miniQbRayTrace");
-	if (v->mlx_win == NULL)
-		return (free_launch(v, false));
-	v->mlx_img.img = mlx_new_image(v->mlx_ptr, SCR_WID, SCR_HGH);
-	if (v->mlx_img.img == NULL)
-		return (free_launch(v, true));
-	v->mlx_img.addr = mlx_get_data_addr(v->mlx_img.img, &v->mlx_img.bpp, \
-		&v->mlx_img.ll, &v->mlx_img.ed);
-	mlx_hook(v->mlx_win, DestroyNotify, SubstructureNotifyMask, \
-			&event_destroy, v);
-	mlx_hook(v->mlx_win, KeyPress, KeyPressMask, &event_keyboard, v);
-	mlx_hook(v->mlx_win, Expose, ExposureMask, &render_threaded, v);
-	mlx_loop(v->mlx_ptr);
+		return (false);
+	if (!init_mrt_mlx(v))
+		return (false);
+	set_mrt_mlx_hook(v);
 	return (true);
 }
 

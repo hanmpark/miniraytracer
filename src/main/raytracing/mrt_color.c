@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:47:18 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/03 21:56:10 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:52:56 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,6 @@ t_fvec3	color_cap(t_fvec3 color)
 	color.y = fmin(1.0, color.y);
 	color.z = fmin(1.0, color.z);
 	return (color);
-}
-
-/*
- * mrt_color_mlx
- * -------------
- * Packs RGBA color components into a single integer value suitable for use
- * with MiniLibX. The function takes individual 8-bit unsigned integers
- * for transparency (t), red (r), green (g), and blue (b) components
- * and combines them into a single 32-bit integer.
- */
-int	mrt_color_mlx(unsigned char t, unsigned char r, \
-	unsigned char g, unsigned char b)
-{
-	return (*(int *)(unsigned char [4]){b, g, r, t});
 }
 
 /*

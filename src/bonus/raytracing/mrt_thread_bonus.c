@@ -6,10 +6,11 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 00:59:59 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 15:58:20 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:39:36 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mrt_error_bonus.h"
 #include "mrt_render_bonus.h"
 
 static double	get_time_seconds(void)
@@ -36,4 +37,26 @@ int	render_threaded(t_mrt *v)
 	pthread_mutex_destroy(&v->count_mutex);
 	printf("Rendering took %.2f seconds.\n", get_time_seconds() - start);
 	return (0);
+}
+
+bool	init_threads(t_mrt *v)
+{
+	static const double	sliceheight = SCR_HGH / NUM_THREADS;
+	int					i;
+
+	i = 0;
+	v->finished_thread = 0;
+	while (i < NUM_THREADS)
+	{
+		v->threads[i].v = v;
+		v->threads[i].count_ref_rays = 0;
+		v->threads[i].start_y = i * sliceheight;
+		v->threads[i].end_y = (i + 1) * sliceheight;
+		if (i == NUM_THREADS - 1)
+			v->threads[i].end_y = SCR_HGH;
+		i++;
+	}
+	if (pthread_mutex_init(&v->count_mutex, NULL))
+		return (error_bool(ERR_MUTEX_INIT));
+	return (true);
 }

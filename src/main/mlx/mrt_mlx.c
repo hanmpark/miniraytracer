@@ -3,39 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   mrt_mlx.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yobouhle <yobouhle@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:21:44 by yobouhle          #+#    #+#             */
-/*   Updated: 2024/03/05 15:20:03 by yobouhle         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:46:45 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mrt_error.h"
 #include "mrt_render.h"
 
-void	mrt_mlx_put_pixel(t_mrt *v, int x, int y, int color)
+static bool	free_launch(t_mrt *v, bool destroy_windows)
 {
-	char		*dst;
-	const int	offset = (y * v->mlx_img.ll + x * (v->mlx_img.bpp / 8));
-
-	dst = v->mlx_img.addr + offset;
-	*(unsigned int *)dst = color;
+	if (destroy_windows == true)
+		mlx_destroy_window(v->mlx_ptr, v->mlx_win);
+	mlx_destroy_display(v->mlx_ptr);
+	free(v->mlx_ptr);
+	return (error_bool(ERR_MLX));
 }
 
-void	mrt_mlx_refresh(t_mrt *v)
+bool	init_mrt_mlx(t_mrt *v)
 {
-	mlx_put_image_to_window(v->mlx_ptr, v->mlx_win, v->mlx_img.img, 0, 0);
-}
-
-void	mrt_mlx_clear(t_mrt *v)
-{
-	int	x;
-	int	y;
-
-	y = -1;
-	while (++y < SCR_HGH)
-	{
-		x = -1;
-		while (++x < SCR_WID)
-			mrt_mlx_put_pixel(v, x, y, 0x0);
-	}
+	v->mlx_ptr = mlx_init();
+	if (v->mlx_ptr == NULL)
+		return (error_bool(ERR_MLX));
+	v->mlx_win = mlx_new_window(v->mlx_ptr, SCR_WID, SCR_HGH, "minirt");
+	if (v->mlx_win == NULL)
+		return (free_launch(v, false));
+	v->mlx_img.img = mlx_new_image(v->mlx_ptr, SCR_WID, SCR_HGH);
+	if (v->mlx_img.img == NULL)
+		return (free_launch(v, true));
+	v->mlx_img.addr = mlx_get_data_addr(v->mlx_img.img, &v->mlx_img.bpp, \
+		&v->mlx_img.ll, &v->mlx_img.ed);
+	return (true);
 }

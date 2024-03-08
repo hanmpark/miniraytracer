@@ -43,7 +43,8 @@ SRCS			= $(addprefix $(SRC_MAIN_DIR)/, \
 					mrt_vec3_op1.c \
 					mrt_vec3_op2.c) \
 				$(addprefix $(MLX_DIR)/, \
-					mrt_event.c \
+					mrt_mlx_event.c \
+					mrt_mlx_image.c \
 					mrt_mlx.c) \
 				$(addprefix $(OBJ_DIR)/, \
 					mrt_cylinder.c \
@@ -81,8 +82,9 @@ SRCS_BONUS		= $(addprefix $(SRC_BONUS_DIR)/, \
 					mrt_vec3_op1_bonus.c \
 					mrt_vec3_op2_bonus.c) \
 				$(addprefix $(MLX_DIR)/, \
-					mrt_event_bonus.c \
-					mrt_mlx_bonus.c) \
+					mrt_mlx_bonus.c \
+					mrt_mlx_event_bonus.c \
+					mrt_mlx_image_bonus.c) \
 				$(addprefix $(OBJ_DIR)/, \
 					mrt_checker_bonus.c \
 					mrt_cone_bonus.c \

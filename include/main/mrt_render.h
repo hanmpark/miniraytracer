@@ -6,7 +6,7 @@
 /*   By: hanmpark <hanmpark@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 11:55:26 by hanmpark          #+#    #+#             */
-/*   Updated: 2024/03/08 15:38:24 by hanmpark         ###   ########.fr       */
+/*   Updated: 2024/03/08 16:45:39 by hanmpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 
 /* MLX */
 
-int		event_keyboard(int keycode, t_mrt *v);
-int		event_destroy(t_mrt *v);
+bool	init_mrt_mlx(t_mrt *v);
+
+void	set_mrt_mlx_hook(t_mrt *v);
 
 void	mrt_mlx_put_pixel(t_mrt *v, int x, int y, int color);
 void	mrt_mlx_refresh(t_mrt *v);

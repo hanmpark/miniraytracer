@@ -9,9 +9,9 @@
 </p></br>
 
 <div align="center">
-    <img alt="Repository created at" src="https://img.shields.io/github/created-at/hanmpark/miniRT"/>
-    <img alt="Repository code size" src="https://img.shields.io/github/languages/code-size/hanmpark/miniRT"/>
-    <img alt="Mostly used language" src="https://img.shields.io/github/languages/top/hanmpark/miniRT"/>
+    <img alt="Repository created at" src="https://img.shields.io/github/created-at/hanmpark/miniraytracer"/>
+    <img alt="Repository code size" src="https://img.shields.io/github/languages/code-size/hanmpark/miniraytracer"/>
+    <img alt="Mostly used language" src="https://img.shields.io/github/languages/top/hanmpark/miniraytracer"/>
 </div>
 
 ## 📖 Description

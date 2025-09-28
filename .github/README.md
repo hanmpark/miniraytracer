@@ -15,7 +15,7 @@
 </div>
 
 ## 📖 Description
-> The miniRT project implements a simple ray tracer to render 3D scenes by simulating the interaction of light with objects.</br>
+> The **miniRT** project implements a simple ray tracer to render 3D scenes by simulating the interaction of light with objects.</br>
 > It introduces fundamental computer graphics concepts:
 > - "**Lighting models**"
 > - "**Shadows**"
@@ -23,7 +23,7 @@
 > - "**Camera perspectives**"
 > The project combines theory and practice in rendering while emphasizing optimization and mathematical problem-solving.
 
-Here are examples of what our miniRT can do:
+Here are examples of what our `miniRT` can do:
 
 <div align="center">
     <img src="https://github.com/hanmpark/miniraytracer/blob/master/minirt_bonus.png" alt="miniRT rendering"/>

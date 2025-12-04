@@ -54,11 +54,6 @@ bool	parse_light(t_mrt *v, char **args, int *o)
 		return (error_clean_array("", args));
 	if (v->light.ratio < 0.0 || v->light.ratio > 1.0)
 		return (error_clean_array(ERR_RATIO, args));
-	if (v->light.rgb.x != 1.0 || v->light.rgb.y != 1.0 || v->light.rgb.z != 1.0)
-	{
-		ft_putstr_fd(WARNING_LIGHT, 1);
-		v->light.rgb = new_fvec3(1.0, 1.0, 1.0);
-	}
 	v->light.rgb = mult_double_fvec3(v->light.rgb, v->light.ratio);
 	c_free_void_array((void **)args);
 	return (true);

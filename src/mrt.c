@@ -20,9 +20,6 @@ static void	init_settings(t_mrt *v)
 	v->antialiasing = true;
 	v->pixel_step = PIXEL_STEP_DEFAULT;
 	v->max_ref_depth = MAX_REF_DEPTH_DEFAULT;
-	v->mouse_tracking = false;
-	v->last_mouse_x = 0;
-	v->last_mouse_y = 0;
 }
 
 static bool	launch(t_mrt *v)

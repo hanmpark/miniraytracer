@@ -163,9 +163,6 @@ typedef struct s_mrt
 	bool			antialiasing;
 	int				pixel_step;
 	int				max_ref_depth;
-	bool			mouse_tracking;
-	int				last_mouse_x;
-	int				last_mouse_y;
 }	t_mrt;
 
 #endif

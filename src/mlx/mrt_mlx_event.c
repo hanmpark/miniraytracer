@@ -39,37 +39,6 @@ static void	move_camera(t_mrt *v, double forward, double strafe)
 	rerender(v);
 }
 
-static void	rotate_camera(t_mrt *v, int x, int y)
-{
-	double	dx;
-	double	dy;
-
-	if (!v->fast_mode)
-	{
-		v->mouse_tracking = false;
-		return ;
-	}
-	if (!v->mouse_tracking)
-	{
-		v->mouse_tracking = true;
-		v->last_mouse_x = x;
-		v->last_mouse_y = y;
-		return ;
-	}
-	dx = (double)(x - v->last_mouse_x);
-	dy = (double)(y - v->last_mouse_y);
-	v->last_mouse_x = x;
-	v->last_mouse_y = y;
-	v->cam.yaw += dx * LOOK_SENSITIVITY;
-	v->cam.pitch -= dy * LOOK_SENSITIVITY;
-	if (v->cam.pitch > (PI / 2.0 - 0.01))
-		v->cam.pitch = PI / 2.0 - 0.01;
-	if (v->cam.pitch < -(PI / 2.0 - 0.01))
-		v->cam.pitch = -(PI / 2.0 - 0.01);
-	update_cam_orientation(&v->cam);
-	rerender(v);
-}
-
 static void	rotate_camera_keys(t_mrt *v, double dyaw, double dpitch)
 {
 	if (!v->fast_mode)
@@ -82,12 +51,6 @@ static void	rotate_camera_keys(t_mrt *v, double dyaw, double dpitch)
 		v->cam.pitch = -(PI / 2.0 - 0.01);
 	update_cam_orientation(&v->cam);
 	rerender(v);
-}
-
-static int	event_mouse(int x, int y, t_mrt *v)
-{
-	rotate_camera(v, x, y);
-	return (0);
 }
 
 static void	set_fast_mode(t_mrt *v, bool enabled)
@@ -105,7 +68,6 @@ static void	set_fast_mode(t_mrt *v, bool enabled)
 		v->max_ref_depth = MAX_REF_DEPTH_DEFAULT;
 		v->antialiasing = true;
 	}
-	v->mouse_tracking = false;
 	reset_threads_state(v);
 	render_threaded(v);
 }
@@ -169,6 +131,5 @@ void	set_mrt_mlx_hook(t_mrt *v)
 	mlx_hook(v->mlx_win, 17, 0, &event_destroy, v);
 	mlx_hook(v->mlx_win, 2, 1L << 0, event_keyboard, v);
 	mlx_hook(v->mlx_win, 12, 1L << 15, event_expose, v);
-	mlx_hook(v->mlx_win, 6, 1L << 6, event_mouse, v);
 	mlx_loop(v->mlx_ptr);
 }

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   mrt_parse_obj.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hanmpark <hanmpark@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 18:50:49 by hanmpark          #+#    #+#             */
-/*   Updated: 2025/12/05 23:01:01 by hanmpark         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "mrt_parsing.h"
 
 static bool	check_specular(const double shininess, const double reflection)

@@ -1,6 +1,6 @@
 #include "mrt_math.h"
 
-static double	det_mat3x3(t_fmat3x3 m)
+inline static double	det_mat3x3(t_fmat3x3 m)
 {
 	double	det;
 
@@ -10,7 +10,7 @@ static double	det_mat3x3(t_fmat3x3 m)
 	return (det);
 }
 
-static void	cofactor_mat3x3(t_fmat3x3 m, t_fmat3x3 cof)
+inline static void cofactor_mat3x3(t_fmat3x3 m, t_fmat3x3 cof)
 {
 	cof[0][0] = (m[1][1] * m[2][2] - m[2][1] * m[1][2]);
 	cof[0][1] = -(m[0][1] * m[2][2] - m[0][2] * m[2][1]);

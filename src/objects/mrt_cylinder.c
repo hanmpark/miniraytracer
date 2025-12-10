@@ -23,9 +23,9 @@ static double	side_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 	double	root;
 
 	root = solve_quadratic(\
-		pow(dir.x, 2.0) + pow(dir.y, 2.0), \
+		(dir.x * dir.x) + (dir.y * dir.y), \
 		2.0 * (pos.x * dir.x + pos.y * dir.y), \
-		pow(pos.x, 2.0) + pow(pos.y, 2.0) - 1.0, INFINITY);
+		(pos.x * pos.x) + (pos.y * pos.y) - 1.0, INFINITY);
 	if (root == INFINITY)
 		return (INFINITY);
 	*ray = add_fvec3(pos, mult_double_fvec3(dir, root));
@@ -51,7 +51,7 @@ static double	cap_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 	else
 		return (INFINITY);
 	*ray = add_fvec3(pos, mult_double_fvec3(dir, root));
-	if (sqrt(pow(ray->x, 2.0) + pow(ray->y, 2.0)) >= 1.0)
+	if (sqrt((ray->x * ray->x) + (ray->y * ray->y)) >= 1.0)
 		return (INFINITY);
 	return (root);
 }

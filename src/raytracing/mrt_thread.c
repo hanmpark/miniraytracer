@@ -1,75 +1,86 @@
 #include "mrt_error.h"
 #include "mrt_render.h"
 
-void	reset_threads_state(t_mrt *v)
+static double get_time_seconds(void)
 {
-	int	i;
-
-	i = 0;
-	v->finished_thread = 0;
-	while (i < NUM_THREADS)
-	{
-		v->threads[i].id = i;
-		v->threads[i].v = v;
-		v->threads[i].count_ref_rays = 0;
-		i++;
-	}
-}
-
-static double	get_time_seconds(void)
-{
-	struct timeval	t;
+	struct timeval t;
 
 	gettimeofday(&t, NULL);
 	return (t.tv_sec + t.tv_usec / 1e6);
 }
 
-static void	real_time_render(t_mrt *v)
+static void launch_multithread(t_mrt *v)
 {
-	while ("Yippie")
+	int i;
+
+	i = 0;
+	pthread_mutex_lock(&v->secu_mutex);
+	while (i < NUM_THREADS)
 	{
-		pthread_mutex_lock(&v->count_mutex);
-		if (v->finished_thread == NUM_THREADS)
-		{
-			pthread_mutex_unlock(&v->count_mutex);
-			break ;
-		}
-		pthread_mutex_unlock(&v->count_mutex);
-		mrt_mlx_refresh(v);
+		v->threads[i].launch_thread = true;
+		i++;
 	}
+	v->launch_multithread = true;
+	pthread_cond_broadcast(&v->threads_cond);
+	pthread_mutex_unlock(&v->secu_mutex);
 }
 
-int	render_threaded(t_mrt *v)
+// TODO TOSEE this is not needed main thread can keep running and first thread handle refresh (avoid mlx waiting)
+static void wait_end_multithread(t_mrt *v)
 {
-	bool	track_time;
-	int		i;
+	pthread_mutex_lock(&v->secu_mutex);
+	while (v->launch_multithread == true)
+		pthread_cond_wait(&v->main_cond, &v->secu_mutex);
+	pthread_mutex_unlock(&v->secu_mutex);
+}
 
-	track_time = !v->fast_mode;
-	reset_threads_state(v);
-	i = -1;
+int launch_render(t_mrt *v)
+{
+	double start;
+	double elapsed;
+
 	mrt_mlx_clear(v);
-	while (++i < NUM_THREADS)
-		pthread_create(&v->threads[i].thread, NULL, render, &v->threads[i]);
-	i = -1;
-	while (++i < NUM_THREADS)
-		pthread_detach(v->threads[i].thread);
-	if (track_time)
-	{
-		double	start;
+	start = get_time_seconds();
 
-		start = get_time_seconds();
-		real_time_render(v);
-		printf("Rendering took %.2f seconds.\n", get_time_seconds() - start);
-	}
-	else
-		real_time_render(v);
+	launch_multithread(v);
+	wait_end_multithread(v);
+
+	mrt_mlx_refresh(v);
+
+	elapsed = get_time_seconds() - start;
+	printf("Rendering took %.2f seconds.\n", elapsed);
+
 	return (0);
 }
 
-bool	init_threads(t_mrt *v)
+bool init_threads(t_mrt *v)
 {
-	reset_threads_state(v);
-	if (pthread_mutex_init(&v->count_mutex, NULL))
+	int i;
+
+	if (pthread_mutex_init(&(v->secu_mutex), NULL))
 		return (error_bool(ERR_MUTEX_INIT));
+	if (pthread_cond_init(&(v->threads_cond), NULL))
+		return (error_bool(ERR_THREAD_COND_INIT));
+	if (pthread_cond_init(&(v->main_cond), NULL))
+		return (error_bool(ERR_THREAD_COND_INIT));
+
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		v->threads[i].id = i;
+		v->threads[i].v = v;
+		v->threads[i].count_ref_rays = 0; // TODO check why count_ref_rays init 0 too (sample_pixel) ?
+		v->threads[i].launch_thread = false;
+		// v->threads[i].camray initialize by setup_camera_ray TODO ?
+		i++;
+	}
+
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		if (pthread_create(&v->threads[i].thread, NULL, thread_render, &v->threads[i]))
+			return (error_bool(ERR_THREAD_INIT));
+		i++;
+	}
 	return (true);
 }

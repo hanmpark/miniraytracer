@@ -42,6 +42,8 @@
 /* THREADS */
 
 # define ERR_MUTEX_INIT "Error\nFailed to initialize mutex\n"
+# define ERR_THREAD_COND_INIT "Error\nFailed to initialize thread_cond\n"
+# define ERR_THREAD_INIT "Error\nFailed to initialize thread\n"
 
 /* USAGE */
 

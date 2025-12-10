@@ -39,8 +39,7 @@ static bool	set_mat(t_obj *obj, t_fvec3 pos, t_fvec3 dir, t_fvec3 scale)
 	mult_mat4x4(obj->fmat4x4[FORWARD], obj->fmat4x4[TRANSLATION]);
 	mult_mat4x4(obj->fmat4x4[FORWARD], orient);
 	mult_mat4x4(obj->fmat4x4[FORWARD], scale_mat);
-	if (!inv_mat4x4(obj->fmat4x4[BACKWARD], obj->fmat4x4[FORWARD]) \
-		|| !extract_linear_mat3x3(obj->lintfm, obj->fmat4x4[FORWARD]))
+	if (!inv_mat4x4(obj->fmat4x4[BACKWARD], obj->fmat4x4[FORWARD]) || !extract_linear_mat3x3(obj->lintfm, obj->fmat4x4[FORWARD]))
 		return (error_bool(ERR_INV_MAT));
 	return (true);
 }

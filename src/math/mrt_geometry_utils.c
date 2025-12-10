@@ -12,7 +12,7 @@ double	solve_quadratic(double a, double b, double c, double ret)
 	double	root1;
 	double	root2;
 
-	det = pow(b, 2.0) - (4.0 * a * c);
+	det = (b * b) - (4.0 * a * c);
 	if (det < 0.0)
 		return (ret);
 	det = sqrt(det);

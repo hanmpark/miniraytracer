@@ -1,71 +1,22 @@
 #include "mrt_math.h"
 
-static bool	compute_det(\
-	t_fmat4x4 m_out_ptr, const double inv[16],  union  u_fmat4x4and16 * m)
+inline static bool can_compute_det(union u_fmat4x4and16 *u_m_out_ptr, const double inv[16], const union u_fmat4x4and16 *u_m_ptr)
 {
-	int		x;
-	int		y;
-	double	det;
+	double det;
+	int index_fill_out;
 
-	det = m->mat16[0] * inv[0] + m->mat16[4] * inv[1] + m->mat16[8] * inv[2] + m->mat16[12] * inv[3];
+	det = u_m_ptr->mat16[0] * inv[0] + u_m_ptr->mat16[4] * inv[1] + u_m_ptr->mat16[8] * inv[2] + u_m_ptr->mat16[12] * inv[3];
 	if (close_enough(det, 0.0))
 		return (false);
 	det = 1.0 / det;
-	y = -1;
-	while (++y < 4)
+
+	index_fill_out = 0;
+	while (index_fill_out < 16)
 	{
-		x = -1;
-		while (++x < 4)
-		{
-			m_out_ptr[y][x] = inv[(4 * y) + x] * det;
-		}
+		u_m_out_ptr->mat16[index_fill_out] = inv[index_fill_out] * det;
+		index_fill_out++;
 	}
 	return (true);
-}
-
-static bool	compute_inv_end(\
-	t_fmat4x4 m_out_ptr, double inv[16], union u_fmat4x4and16 * m)
-{
-	inv[10] = m->mat16[0] * m->mat16[5] * m->mat16[15] - m->mat16[0] * m->mat16[13] * m->mat16[7] - m->mat16[1] * m->mat16[4] * \
-	m->mat16[15] + m->mat16[1] * m->mat16[12] * m->mat16[7] + m->mat16[3] * m->mat16[4] * m->mat16[13] - m->mat16[3] * m->mat16[12] * m->mat16[5];
-	inv[11] = -m->mat16[0] * m->mat16[5] * m->mat16[11] + m->mat16[0] * m->mat16[9] * m->mat16[7] + m->mat16[1] * m->mat16[4] * \
-	m->mat16[11] - m->mat16[1] * m->mat16[8] * m->mat16[7] - m->mat16[3] * m->mat16[4] * m->mat16[9] + m->mat16[3] * m->mat16[8] * m->mat16[5];
-	inv[12] = -m->mat16[4] * m->mat16[9] * m->mat16[14] + m->mat16[4] * m->mat16[13] * m->mat16[10] + m->mat16[5] * m->mat16[8] * \
-	m->mat16[14] - m->mat16[5] * m->mat16[12] * m->mat16[10] - m->mat16[6] * m->mat16[8] * m->mat16[13] + m->mat16[6] * m->mat16[12] * m->mat16[9];
-	inv[13] = m->mat16[0] * m->mat16[9] * m->mat16[14] - m->mat16[0] * m->mat16[13] * m->mat16[10] - m->mat16[1] * m->mat16[8] * \
-	m->mat16[14] + m->mat16[1] * m->mat16[12] * m->mat16[10] + m->mat16[2] * m->mat16[8] * m->mat16[13] - m->mat16[2] * m->mat16[12] * m->mat16[9];
-	inv[14] = -m->mat16[0] * m->mat16[5] * m->mat16[14] + m->mat16[0] * m->mat16[13] * m->mat16[6] + m->mat16[1] * m->mat16[4] * \
-	m->mat16[14] - m->mat16[1] * m->mat16[12] * m->mat16[6] - m->mat16[2] * m->mat16[4] * m->mat16[13] + m->mat16[2] * m->mat16[12] * m->mat16[5];
-	inv[15] = m->mat16[0] * m->mat16[5] * m->mat16[10] - m->mat16[0] * m->mat16[9] * m->mat16[6] - m->mat16[1] * m->mat16[4] * \
-	m->mat16[10] + m->mat16[1] * m->mat16[8] * m->mat16[6] + m->mat16[2] * m->mat16[4] * m->mat16[9] - m->mat16[2] * m->mat16[8] * m->mat16[5];
-	return (compute_det(m_out_ptr, (const double *)inv, m));
-}
-
-static bool	compute_inv(t_fmat4x4 m_out_ptr, union	u_fmat4x4and16 * m)
-{
-	double	inv[16];
-
-	inv[0] = m->mat16[5] * m->mat16[10] * m->mat16[15] - m->mat16[5] * m->mat16[14] * m->mat16[11] - m->mat16[6] * m->mat16[9] * \
-	m->mat16[15] + m->mat16[6] * m->mat16[13] * m->mat16[11] + m->mat16[7] * m->mat16[9] * m->mat16[14] - m->mat16[7] * m->mat16[13] * m->mat16[10];
-	inv[1] = -m->mat16[1] * m->mat16[10] * m->mat16[15] + m->mat16[1] * m->mat16[14] * m->mat16[11] + m->mat16[2] * m->mat16[9] * \
-	m->mat16[15] - m->mat16[2] * m->mat16[13] * m->mat16[11] - m->mat16[3] * m->mat16[9] * m->mat16[14] + m->mat16[3] * m->mat16[13] * m->mat16[10];
-	inv[2] = m->mat16[1] * m->mat16[6] * m->mat16[15] - m->mat16[1] * m->mat16[14] * m->mat16[7] - m->mat16[2] * m->mat16[5] * \
-	m->mat16[15] + m->mat16[2] * m->mat16[13] * m->mat16[7] + m->mat16[3] * m->mat16[5] * m->mat16[14] - m->mat16[3] * m->mat16[13] * m->mat16[6];
-	inv[3] = -m->mat16[1] * m->mat16[6] * m->mat16[11] + m->mat16[1] * m->mat16[10] * m->mat16[7] + m->mat16[2] * m->mat16[5] * \
-	m->mat16[11] - m->mat16[2] * m->mat16[9] * m->mat16[7] - m->mat16[3] * m->mat16[5] * m->mat16[10] + m->mat16[3] * m->mat16[9] * m->mat16[6];
-	inv[4] = -m->mat16[4] * m->mat16[10] * m->mat16[15] + m->mat16[4] * m->mat16[14] * m->mat16[11] + m->mat16[6] * m->mat16[8] * \
-	m->mat16[15] - m->mat16[6] * m->mat16[12] * m->mat16[11] - m->mat16[7] * m->mat16[8] * m->mat16[14] + m->mat16[7] * m->mat16[12] * m->mat16[10];
-	inv[5] = m->mat16[0] * m->mat16[10] * m->mat16[15] - m->mat16[0] * m->mat16[14] * m->mat16[11] - m->mat16[2] * m->mat16[8] * \
-	m->mat16[15] + m->mat16[2] * m->mat16[12] * m->mat16[11] + m->mat16[3] * m->mat16[8] * m->mat16[14] - m->mat16[3] * m->mat16[12] * m->mat16[10];
-	inv[6] = -m->mat16[0] * m->mat16[6] * m->mat16[15] + m->mat16[0] * m->mat16[14] * m->mat16[7] + m->mat16[2] * m->mat16[4] * \
-	m->mat16[15] - m->mat16[2] * m->mat16[12] * m->mat16[7] - m->mat16[3] * m->mat16[4] * m->mat16[14] + m->mat16[3] * m->mat16[12] * m->mat16[6];
-	inv[7] = m->mat16[0] * m->mat16[6] * m->mat16[11] - m->mat16[0] * m->mat16[10] * m->mat16[7] - m->mat16[2] * m->mat16[4] * \
-	m->mat16[11] + m->mat16[2] * m->mat16[8] * m->mat16[7] + m->mat16[3] * m->mat16[4] * m->mat16[10] - m->mat16[3] * m->mat16[8] * m->mat16[6];
-	inv[8] = m->mat16[4] * m->mat16[9] * m->mat16[15] - m->mat16[4] * m->mat16[13] * m->mat16[11] - m->mat16[5] * m->mat16[8] * \
-	m->mat16[15] + m->mat16[5] * m->mat16[12] * m->mat16[11] + m->mat16[7] * m->mat16[8] * m->mat16[13] - m->mat16[7] * m->mat16[12] * m->mat16[9];
-	inv[9] = -m->mat16[0] * m->mat16[9] * m->mat16[15] + m->mat16[0] * m->mat16[13] * m->mat16[11] + m->mat16[1] * m->mat16[8] * \
-	m->mat16[15] - m->mat16[1] * m->mat16[12] * m->mat16[11] - m->mat16[3] * m->mat16[8] * m->mat16[13] + m->mat16[3] * m->mat16[12] * m->mat16[9];
-	return (compute_inv_end(m_out_ptr, inv, m));
 }
 
 /*
@@ -74,20 +25,26 @@ static bool	compute_inv(t_fmat4x4 m_out_ptr, union	u_fmat4x4and16 * m)
  */
 bool	inv_mat4x4(t_fmat4x4 m_out_ptr, const t_fmat4x4 m_ptr)
 {
+	union u_fmat4x4and16 *u_m_out_ptr = (union u_fmat4x4and16 *)m_out_ptr;
+	const union u_fmat4x4and16 *u_m_ptr = (const union u_fmat4x4and16 *)m_ptr;
+	double inv[16];
 
-	union u_fmat4x4and16 * union_m_ptr = (union u_fmat4x4and16 *)m_ptr; 
-	// double	m->mat16[16];
-	// int		x;
-	// int		y;
+	inv[0] = u_m_ptr->mat16[5] * u_m_ptr->mat16[10] * u_m_ptr->mat16[15] - u_m_ptr->mat16[5] * u_m_ptr->mat16[14] * u_m_ptr->mat16[11] - u_m_ptr->mat16[6] * u_m_ptr->mat16[9] * u_m_ptr->mat16[15] + u_m_ptr->mat16[6] * u_m_ptr->mat16[13] * u_m_ptr->mat16[11] + u_m_ptr->mat16[7] * u_m_ptr->mat16[9] * u_m_ptr->mat16[14] - u_m_ptr->mat16[7] * u_m_ptr->mat16[13] * u_m_ptr->mat16[10];
+	inv[1] = -u_m_ptr->mat16[1] * u_m_ptr->mat16[10] * u_m_ptr->mat16[15] + u_m_ptr->mat16[1] * u_m_ptr->mat16[14] * u_m_ptr->mat16[11] + u_m_ptr->mat16[2] * u_m_ptr->mat16[9] * u_m_ptr->mat16[15] - u_m_ptr->mat16[2] * u_m_ptr->mat16[13] * u_m_ptr->mat16[11] - u_m_ptr->mat16[3] * u_m_ptr->mat16[9] * u_m_ptr->mat16[14] + u_m_ptr->mat16[3] * u_m_ptr->mat16[13] * u_m_ptr->mat16[10];
+	inv[2] = u_m_ptr->mat16[1] * u_m_ptr->mat16[6] * u_m_ptr->mat16[15] - u_m_ptr->mat16[1] * u_m_ptr->mat16[14] * u_m_ptr->mat16[7] - u_m_ptr->mat16[2] * u_m_ptr->mat16[5] * u_m_ptr->mat16[15] + u_m_ptr->mat16[2] * u_m_ptr->mat16[13] * u_m_ptr->mat16[7] + u_m_ptr->mat16[3] * u_m_ptr->mat16[5] * u_m_ptr->mat16[14] - u_m_ptr->mat16[3] * u_m_ptr->mat16[13] * u_m_ptr->mat16[6];
+	inv[3] = -u_m_ptr->mat16[1] * u_m_ptr->mat16[6] * u_m_ptr->mat16[11] + u_m_ptr->mat16[1] * u_m_ptr->mat16[10] * u_m_ptr->mat16[7] + u_m_ptr->mat16[2] * u_m_ptr->mat16[5] * u_m_ptr->mat16[11] - u_m_ptr->mat16[2] * u_m_ptr->mat16[9] * u_m_ptr->mat16[7] - u_m_ptr->mat16[3] * u_m_ptr->mat16[5] * u_m_ptr->mat16[10] + u_m_ptr->mat16[3] * u_m_ptr->mat16[9] * u_m_ptr->mat16[6];
+	inv[4] = -u_m_ptr->mat16[4] * u_m_ptr->mat16[10] * u_m_ptr->mat16[15] + u_m_ptr->mat16[4] * u_m_ptr->mat16[14] * u_m_ptr->mat16[11] + u_m_ptr->mat16[6] * u_m_ptr->mat16[8] * u_m_ptr->mat16[15] - u_m_ptr->mat16[6] * u_m_ptr->mat16[12] * u_m_ptr->mat16[11] - u_m_ptr->mat16[7] * u_m_ptr->mat16[8] * u_m_ptr->mat16[14] + u_m_ptr->mat16[7] * u_m_ptr->mat16[12] * u_m_ptr->mat16[10];
+	inv[5] = u_m_ptr->mat16[0] * u_m_ptr->mat16[10] * u_m_ptr->mat16[15] - u_m_ptr->mat16[0] * u_m_ptr->mat16[14] * u_m_ptr->mat16[11] - u_m_ptr->mat16[2] * u_m_ptr->mat16[8] * u_m_ptr->mat16[15] + u_m_ptr->mat16[2] * u_m_ptr->mat16[12] * u_m_ptr->mat16[11] + u_m_ptr->mat16[3] * u_m_ptr->mat16[8] * u_m_ptr->mat16[14] - u_m_ptr->mat16[3] * u_m_ptr->mat16[12] * u_m_ptr->mat16[10];
+	inv[6] = -u_m_ptr->mat16[0] * u_m_ptr->mat16[6] * u_m_ptr->mat16[15] + u_m_ptr->mat16[0] * u_m_ptr->mat16[14] * u_m_ptr->mat16[7] + u_m_ptr->mat16[2] * u_m_ptr->mat16[4] * u_m_ptr->mat16[15] - u_m_ptr->mat16[2] * u_m_ptr->mat16[12] * u_m_ptr->mat16[7] - u_m_ptr->mat16[3] * u_m_ptr->mat16[4] * u_m_ptr->mat16[14] + u_m_ptr->mat16[3] * u_m_ptr->mat16[12] * u_m_ptr->mat16[6];
+	inv[7] = u_m_ptr->mat16[0] * u_m_ptr->mat16[6] * u_m_ptr->mat16[11] - u_m_ptr->mat16[0] * u_m_ptr->mat16[10] * u_m_ptr->mat16[7] - u_m_ptr->mat16[2] * u_m_ptr->mat16[4] * u_m_ptr->mat16[11] + u_m_ptr->mat16[2] * u_m_ptr->mat16[8] * u_m_ptr->mat16[7] + u_m_ptr->mat16[3] * u_m_ptr->mat16[4] * u_m_ptr->mat16[10] - u_m_ptr->mat16[3] * u_m_ptr->mat16[8] * u_m_ptr->mat16[6];
+	inv[8] = u_m_ptr->mat16[4] * u_m_ptr->mat16[9] * u_m_ptr->mat16[15] - u_m_ptr->mat16[4] * u_m_ptr->mat16[13] * u_m_ptr->mat16[11] - u_m_ptr->mat16[5] * u_m_ptr->mat16[8] * u_m_ptr->mat16[15] + u_m_ptr->mat16[5] * u_m_ptr->mat16[12] * u_m_ptr->mat16[11] + u_m_ptr->mat16[7] * u_m_ptr->mat16[8] * u_m_ptr->mat16[13] - u_m_ptr->mat16[7] * u_m_ptr->mat16[12] * u_m_ptr->mat16[9];
+	inv[9] = -u_m_ptr->mat16[0] * u_m_ptr->mat16[9] * u_m_ptr->mat16[15] + u_m_ptr->mat16[0] * u_m_ptr->mat16[13] * u_m_ptr->mat16[11] + u_m_ptr->mat16[1] * u_m_ptr->mat16[8] * u_m_ptr->mat16[15] - u_m_ptr->mat16[1] * u_m_ptr->mat16[12] * u_m_ptr->mat16[11] - u_m_ptr->mat16[3] * u_m_ptr->mat16[8] * u_m_ptr->mat16[13] + u_m_ptr->mat16[3] * u_m_ptr->mat16[12] * u_m_ptr->mat16[9];
+	inv[10] = u_m_ptr->mat16[0] * u_m_ptr->mat16[5] * u_m_ptr->mat16[15] - u_m_ptr->mat16[0] * u_m_ptr->mat16[13] * u_m_ptr->mat16[7] - u_m_ptr->mat16[1] * u_m_ptr->mat16[4] * u_m_ptr->mat16[15] + u_m_ptr->mat16[1] * u_m_ptr->mat16[12] * u_m_ptr->mat16[7] + u_m_ptr->mat16[3] * u_m_ptr->mat16[4] * u_m_ptr->mat16[13] - u_m_ptr->mat16[3] * u_m_ptr->mat16[12] * u_m_ptr->mat16[5];
+	inv[11] = -u_m_ptr->mat16[0] * u_m_ptr->mat16[5] * u_m_ptr->mat16[11] + u_m_ptr->mat16[0] * u_m_ptr->mat16[9] * u_m_ptr->mat16[7] + u_m_ptr->mat16[1] * u_m_ptr->mat16[4] * u_m_ptr->mat16[11] - u_m_ptr->mat16[1] * u_m_ptr->mat16[8] * u_m_ptr->mat16[7] - u_m_ptr->mat16[3] * u_m_ptr->mat16[4] * u_m_ptr->mat16[9] + u_m_ptr->mat16[3] * u_m_ptr->mat16[8] * u_m_ptr->mat16[5];
+	inv[12] = -u_m_ptr->mat16[4] * u_m_ptr->mat16[9] * u_m_ptr->mat16[14] + u_m_ptr->mat16[4] * u_m_ptr->mat16[13] * u_m_ptr->mat16[10] + u_m_ptr->mat16[5] * u_m_ptr->mat16[8] * u_m_ptr->mat16[14] - u_m_ptr->mat16[5] * u_m_ptr->mat16[12] * u_m_ptr->mat16[10] - u_m_ptr->mat16[6] * u_m_ptr->mat16[8] * u_m_ptr->mat16[13] + u_m_ptr->mat16[6] * u_m_ptr->mat16[12] * u_m_ptr->mat16[9];
+	inv[13] = u_m_ptr->mat16[0] * u_m_ptr->mat16[9] * u_m_ptr->mat16[14] - u_m_ptr->mat16[0] * u_m_ptr->mat16[13] * u_m_ptr->mat16[10] - u_m_ptr->mat16[1] * u_m_ptr->mat16[8] * u_m_ptr->mat16[14] + u_m_ptr->mat16[1] * u_m_ptr->mat16[12] * u_m_ptr->mat16[10] + u_m_ptr->mat16[2] * u_m_ptr->mat16[8] * u_m_ptr->mat16[13] - u_m_ptr->mat16[2] * u_m_ptr->mat16[12] * u_m_ptr->mat16[9];
+	inv[14] = -u_m_ptr->mat16[0] * u_m_ptr->mat16[5] * u_m_ptr->mat16[14] + u_m_ptr->mat16[0] * u_m_ptr->mat16[13] * u_m_ptr->mat16[6] + u_m_ptr->mat16[1] * u_m_ptr->mat16[4] * u_m_ptr->mat16[14] - u_m_ptr->mat16[1] * u_m_ptr->mat16[12] * u_m_ptr->mat16[6] - u_m_ptr->mat16[2] * u_m_ptr->mat16[4] * u_m_ptr->mat16[13] + u_m_ptr->mat16[2] * u_m_ptr->mat16[12] * u_m_ptr->mat16[5];
+	inv[15] = u_m_ptr->mat16[0] * u_m_ptr->mat16[5] * u_m_ptr->mat16[10] - u_m_ptr->mat16[0] * u_m_ptr->mat16[9] * u_m_ptr->mat16[6] - u_m_ptr->mat16[1] * u_m_ptr->mat16[4] * u_m_ptr->mat16[10] + u_m_ptr->mat16[1] * u_m_ptr->mat16[8] * u_m_ptr->mat16[6] + u_m_ptr->mat16[2] * u_m_ptr->mat16[4] * u_m_ptr->mat16[9] - u_m_ptr->mat16[2] * u_m_ptr->mat16[8] * u_m_ptr->mat16[5];
 
-	// y = -1;
-	// while (++y < 4)
-	// {
-	// 	x = -1;
-	// 	while (++x < 4)
-	// 	{
-	// 		m->mat16[(4 * y) + x] = m_ptr[y][x];
-	// 	}
-	// }
-	return (compute_inv(m_out_ptr, union_m_ptr));
+	return (can_compute_det(u_m_out_ptr, inv, u_m_ptr));
 }

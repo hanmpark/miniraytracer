@@ -4,7 +4,7 @@ void	compute_spheric_uv(t_hit *hit, t_fvec3 ray, t_type type)
 {
 	if (type == SPHERE)
 	{
-		hit->fuv.u = atan(sqrt(pow(ray.x, 2.0) + pow(ray.y, 2.0)) / ray.z) / \
+		hit->fuv.u = atan(sqrt((ray.x * ray.x) + (ray.y * ray.y)) / ray.z) / \
 			PI * SPHERE_CHECKER;
 		hit->fuv.v = atan(ray.y / ray.x);
 		if (ray.x < 0)

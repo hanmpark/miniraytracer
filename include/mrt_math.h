@@ -34,8 +34,8 @@ typedef struct s_fvec3
 
 union u_fmat4x4and16
 {
-	double mat4x4[4][4];
-	double mat16[16];
+	double	mat4x4[4][4];
+	double	mat16[16];
 } ;
 
 typedef double	t_fmat4x4[4][4];

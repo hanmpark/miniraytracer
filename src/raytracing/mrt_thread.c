@@ -9,7 +9,7 @@ static double get_time_seconds(void)
 	return (t.tv_sec + t.tv_usec / 1e6);
 }
 
-static void launch_multithread(t_mrt *v)
+static void	launch_and_wait_end_multithreads(t_mrt *v)
 {
 	int i;
 
@@ -22,13 +22,6 @@ static void launch_multithread(t_mrt *v)
 	}
 	v->launch_multithread = true;
 	pthread_cond_broadcast(&v->threads_cond);
-	pthread_mutex_unlock(&v->secu_mutex);
-}
-
-// TODO TOSEE this is not needed main thread can keep running and first thread handle refresh (avoid mlx waiting)
-static void wait_end_multithread(t_mrt *v)
-{
-	pthread_mutex_lock(&v->secu_mutex);
 	while (v->launch_multithread == true)
 		pthread_cond_wait(&v->main_cond, &v->secu_mutex);
 	pthread_mutex_unlock(&v->secu_mutex);
@@ -39,11 +32,10 @@ int launch_render(t_mrt *v)
 	double start;
 	double elapsed;
 
-	mrt_mlx_clear(v);
+	// mrt_mlx_clear(v);
 	start = get_time_seconds();
 
-	launch_multithread(v);
-	wait_end_multithread(v);
+	launch_and_wait_end_multithreads(v);
 
 	mrt_mlx_refresh(v);
 
@@ -64,6 +56,10 @@ bool init_threads(t_mrt *v)
 	if (pthread_cond_init(&(v->main_cond), NULL))
 		return (error_bool(ERR_THREAD_COND_INIT));
 
+	v->launch_multithread = false;
+	v->finished_thread = 0;
+	v->killed_thread = 0;
+
 	i = 0;
 	while (i < NUM_THREADS)
 	{
@@ -71,6 +67,7 @@ bool init_threads(t_mrt *v)
 		v->threads[i].v = v;
 		v->threads[i].count_ref_rays = 0; // TODO check why count_ref_rays init 0 too (sample_pixel) ?
 		v->threads[i].launch_thread = false;
+		v->threads[i].kill = false;
 		// v->threads[i].camray initialize by setup_camera_ray TODO ?
 		i++;
 	}

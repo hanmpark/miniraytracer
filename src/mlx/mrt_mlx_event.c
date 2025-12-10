@@ -52,10 +52,33 @@ static void set_fast_mode(t_mrt *v, bool enabled)
 
 static int event_destroy(t_mrt *v)
 {
+	int i;
+
+	pthread_mutex_lock(&v->secu_mutex);
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		v->threads[i].kill = true;
+		i++;
+		// printf("debug %d\n", i);
+	}
+	pthread_mutex_unlock(&v->secu_mutex);
+	launch_render(v);
+	i = 0;
+	while (i < NUM_THREADS)
+	{
+		if (pthread_join(v->threads[i].thread, NULL))
+		{
+			write(STDERR_FILENO, "pthread_join call fail event_destroy\n", 38);
+			ft_putnbr_fd(i,STDERR_FILENO);
+		}
+		i++;
+	}
 	free(v->lights);
 	free(v->objs);
 	pthread_mutex_destroy(&v->secu_mutex);
-	// TODO add destruction of pthread_cond and thread kill
+	pthread_cond_destroy(&v->main_cond);
+	pthread_cond_destroy(&v->threads_cond);
 	mlx_destroy_image(v->mlx_ptr, v->mlx_img.img);
 	mlx_destroy_window(v->mlx_ptr, v->mlx_win);
 	free(v->mlx_ptr);

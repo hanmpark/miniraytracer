@@ -1,10 +1,10 @@
 #include "mrt_render.h"
 
-static t_fvec3 pixel_color(t_th *clu, t_ray camray)
+static t_fvec3	pixel_color(t_th *clu, t_ray camray)
 {
-	t_fvec3 color;
-	t_hit hit;
-	int i;
+	t_fvec3	color;
+	t_hit	hit;
+	int		i;
 
 	color = new_fvec3(0.0, 0.0, 0.0);
 	hit.min_dist = INFINITY;
@@ -18,19 +18,19 @@ static t_fvec3 pixel_color(t_th *clu, t_ray camray)
 	return (color);
 }
 
-static t_fvec3 sample_pixel(t_th *clu, double x, double y)
+static t_fvec3	sample_pixel(t_th *clu, double x, double y)
 {
 	clu->count_ref_rays = 0;
 	setup_camera_ray(clu->v, &clu->camray, x, y);
 	return (pixel_color(clu, clu->camray));
 }
 
-static t_fvec3 render_pixel(t_th *clu, double x, double y)
+static t_fvec3	render_pixel(t_th *clu, double x, double y)
 {
-	const double offs[2] = {-0.25, 0.25};
-	t_fvec3 col;
-	int i;
-	int j;
+	const double	offs[2] = {-0.25, 0.25};
+	t_fvec3			col;
+	int				i;
+	int				j;
 
 	col = new_fvec3(0.0, 0.0, 0.0);
 	if (!clu->v->antialiasing)
@@ -45,10 +45,10 @@ static t_fvec3 render_pixel(t_th *clu, double x, double y)
 	return (col);
 }
 
-static void fill_block(t_mrt *v, int x, int y, int step, int color)
+static void	fill_block(t_mrt *v, int x, int y, int step, int color)
 {
-	int xx;
-	int yy;
+	int	xx;
+	int	yy;
 
 	yy = y;
 	while (yy < y + step && yy < SCR_HGH)
@@ -63,16 +63,16 @@ static void fill_block(t_mrt *v, int x, int y, int step, int color)
 	}
 }
 
-void *thread_render(void *arg)
+void	*thread_render(void *arg)
 {
-	t_th *clu;
-	int step;
-	int x;
-	int y;
-	int color;
-	t_fvec3 col;
-	double sample_x;
-	double sample_y;
+	t_th	*clu;
+	int		step;
+	int		x;
+	int		y;
+	int		color;
+	t_fvec3	col;
+	double	sample_x;
+	double	sample_y;
 
 	clu = (t_th *)arg;
 	while ("Yippie")
@@ -80,6 +80,18 @@ void *thread_render(void *arg)
 		pthread_mutex_lock(&clu->v->secu_mutex);
 		while (clu->v->launch_multithread == false || clu->launch_thread == false)
 			pthread_cond_wait(&clu->v->threads_cond, &clu->v->secu_mutex);
+		if (clu->kill == true)
+		{
+			clu->v->killed_thread++;
+			if (clu->v->killed_thread == NUM_THREADS)
+			{
+				clu->v->launch_multithread = false;
+				pthread_cond_signal(&clu->v->main_cond);
+			}
+			// printf("pass %d\n", clu->id);
+			pthread_mutex_unlock(&clu->v->secu_mutex);
+			return (NULL);
+		}
 		pthread_mutex_unlock(&clu->v->secu_mutex);
 
 		step = clu->v->pixel_step;
@@ -89,8 +101,8 @@ void *thread_render(void *arg)
 			x = 0;
 			while (x < SCR_WID)
 			{
-				sample_x = x + (step > 1 ? (step / 2.0) : 0.0);
-				sample_y = y + (step > 1 ? (step / 2.0) : 0.0);
+				sample_x = x + (step > 1 ? (step >> 1) : 0);
+				sample_y = y + (step > 1 ? (step / 2.0) : 0);
 				if (sample_x >= SCR_WID)
 					sample_x = SCR_WID - 1;
 				if (sample_y >= SCR_HGH)
@@ -103,7 +115,7 @@ void *thread_render(void *arg)
 				x += step;
 			}
 			y += NUM_THREADS * step;
-			// TODO not the best for multithread better to let one render
+			// TODO remove or adapt work only the first render
 			if (clu->id == 0 && clu->v->fast_mode == false)
 				mrt_mlx_refresh(clu->v);
 		}

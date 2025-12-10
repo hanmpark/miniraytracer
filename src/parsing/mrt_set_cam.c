@@ -17,8 +17,7 @@ void	set_cam_screen(t_cam *cam)
 
 	fov = cam->fov * (PI / 180.0);
 	cam->prj_u = mult_double_fvec3(\
-						norm_fvec3(cross_fvec3(cam->align, cam->up)), \
-						fov);
+		norm_fvec3(cross_fvec3(cam->align, cam->up)), fov);
 	cam->prj_v = mult_double_fvec3(\
 						norm_fvec3(\
 							cross_fvec3(cam->align, cam->prj_u)), \

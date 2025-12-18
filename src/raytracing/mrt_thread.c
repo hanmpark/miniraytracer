@@ -23,7 +23,10 @@ static void	launch_and_wait_end_multithreads(t_mrt *v)
 	v->launch_multithread = true;
 	pthread_cond_broadcast(&v->threads_cond);
 	while (v->launch_multithread == true)
+	{
 		pthread_cond_wait(&v->main_cond, &v->secu_mutex);
+		mrt_mlx_refresh(v); // in a pulse of pthread_cond_signal draw one time
+	}
 	pthread_mutex_unlock(&v->secu_mutex);
 }
 
@@ -32,12 +35,11 @@ int launch_render(t_mrt *v)
 	double start;
 	double elapsed;
 
-	// mrt_mlx_clear(v);
+	if (v->fast_mode == false)
+		mrt_mlx_clear(v);
 	start = get_time_seconds();
 
 	launch_and_wait_end_multithreads(v);
-
-	mrt_mlx_refresh(v);
 
 	elapsed = get_time_seconds() - start;
 	printf("Rendering took %.2f seconds.\n", elapsed);

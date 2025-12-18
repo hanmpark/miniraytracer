@@ -88,12 +88,13 @@ void	*thread_render(void *arg)
 				clu->v->launch_multithread = false;
 				pthread_cond_signal(&clu->v->main_cond);
 			}
-			// printf("pass %d\n", clu->id);
 			pthread_mutex_unlock(&clu->v->secu_mutex);
 			return (NULL);
 		}
 		pthread_mutex_unlock(&clu->v->secu_mutex);
 
+		if (clu->id == 0)
+			clu->v->refresh_step = 0;
 		step = clu->v->pixel_step;
 		y = clu->id * step;
 		while (y < SCR_HGH)
@@ -111,13 +112,27 @@ void	*thread_render(void *arg)
 				col = color_to_byte(color_cap(col,
 											  clu->v->antialiasing ? SAMPLES_PER_PIXEL : 1));
 				color = mrt_color_mlx(0, col.x, col.y, col.z);
-				fill_block(clu->v, x, y, step, color);
+				if (clu->v->fast_mode == false)
+				{
+					pthread_mutex_lock(&clu->v->secu_mutex);
+					fill_block(clu->v, x, y, step, color);
+					pthread_mutex_unlock(&clu->v->secu_mutex);
+					if (clu->id == 0)
+					{
+						if (clu->v->refresh_step >= REFRESH_STEP) 
+						{
+							// send a pulse to render one time to main
+							pthread_cond_signal(&clu->v->main_cond);
+							clu->v->refresh_step = 0;
+						}
+						clu->v->refresh_step++;
+					}
+				}
+				else
+					fill_block(clu->v, x, y, step, color);
 				x += step;
 			}
 			y += NUM_THREADS * step;
-			// TODO remove or adapt work only the first render
-			if (clu->id == 0 && clu->v->fast_mode == false)
-				mrt_mlx_refresh(clu->v);
 		}
 
 		pthread_mutex_lock(&clu->v->secu_mutex);

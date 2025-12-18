@@ -57,6 +57,7 @@
 # define MAX_REF_DEPTH_DEFAULT 100
 # define PIXEL_STEP_DEFAULT 1
 # define PIXEL_STEP_FAST 4
+# define REFRESH_STEP 100
 # define MOVE_STEP 0.5
 # define LOOK_SENSITIVITY 0.002
 # define KEY_LOOK_STEP 0.05
@@ -162,6 +163,7 @@ typedef struct s_mrt
 	bool			fast_mode;
 	bool			antialiasing;
 	int				pixel_step;
+	int				refresh_step;
 	int				max_ref_depth;
 }	t_mrt;
 

@@ -6,6 +6,28 @@ int	close_enough(double a, double b)
 	return (fabs(a - b) < EPSILON);
 }
 
+void	convert_radian(t_fvec3 *rot, bool is_cam)
+{
+	if (is_cam == true)
+	{
+		if (rot->x < 0.0 && close_enough(rot->x, -0.5))
+			rot->x += 0.01;
+		if (rot->y < 0.0 && close_enough(rot->y, -0.5))
+			rot->y += 0.01;
+		if (rot->z < 0.0 && close_enough(rot->z, -0.5))
+			rot->z += 0.01;
+		if (rot->x >= 0.0 && close_enough(rot->x, 0.5))
+			rot->x -= 0.01;
+		if (rot->y >= 0.0 && close_enough(rot->y, 0.5))
+			rot->y -= 0.01;
+		if (rot->z >= 0.0 && close_enough(rot->z, 0.5))
+			rot->z -= 0.01;
+	}
+	rot->x *= PI;
+	rot->y *= PI;
+	rot->z *= PI;
+}
+
 double	solve_quadratic(double a, double b, double c, double ret)
 {
 	double	det;

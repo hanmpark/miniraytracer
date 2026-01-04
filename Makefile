@@ -2,10 +2,11 @@
 INC	= include
 
 SRC_DIR	= src
+OBJ_DIR = obj
 
-MTH_DIR			= math
+MATH_DIR		= math
 MLX_DIR			= mlx
-OBJ_DIR			= objects
+OBJRT_DIR		= objects
 PRS_DIR			= parsing
 RTC_DIR			= raytracing
 
@@ -34,7 +35,7 @@ endif
 SRCS			= $(addprefix $(SRC_DIR)/, \
 					mrt.c \
 					mrt_errors.c \
-				$(addprefix $(MTH_DIR)/, \
+				$(addprefix $(MATH_DIR)/, \
 					mrt_geometry_utils.c \
 					mrt_mat3x3_inv.c \
 					mrt_mat3x3_op.c \
@@ -47,7 +48,7 @@ SRCS			= $(addprefix $(SRC_DIR)/, \
 					mrt_mlx.c \
 					mrt_mlx_event.c \
 					mrt_mlx_image.c) \
-				$(addprefix $(OBJ_DIR)/, \
+				$(addprefix $(OBJRT_DIR)/, \
 					mrt_checker.c \
 					mrt_cone.c \
 					mrt_cylinder.c \
@@ -72,12 +73,13 @@ SRCS			= $(addprefix $(SRC_DIR)/, \
 					mrt_render.c \
 					mrt_thread.c))
 
-OBJS		= $(SRCS:.c=.o)
+OBJS		= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # -------------------------------- COMPILATION --------------------------------- #
 DEPS		= Makefile $(addprefix $(INC)/, mrt_math.h mrt_error.h mrt_objects.h mrt_parsing.h mrt_render.h mrt.h)
 
-$(SRC_DIR)/%.o:	$(SRC_DIR)/%.c $(DEPS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPS)
+				@mkdir -p $(dir $@)
 				$(CC) $(CFLAGS) -I$(INC) -I$(LIBMLX_DIR) -I$(LIBFT_INC_DIR) -c $< -o $@
 
 # ----------------------------------- RULES ------------------------------------ #
@@ -90,7 +92,7 @@ $(NAME):		$(OBJS)
 				$(CC) $(CFLAGS) $(OBJS) $(UTILS_FLAGS) -L$(LIBMLX_DIR) $(MLX_FLAGS) -o $@
 
 libft:
-				$(MAKE) -C $(LIBFT_DIR)
+				$(MAKE) bonus -C  $(LIBFT_DIR)
 
 mlx:
 				$(MAKE) -C $(LIBMLX_DIR)
@@ -98,12 +100,12 @@ mlx:
 clean:
 				$(MAKE) -C $(LIBFT_DIR) clean
 				$(MAKE) -C $(LIBMLX_DIR) clean
-				$(RM) -r $(OBJS)
+				$(RM) -r $(OBJ_DIR)
 
 fclean:
 				$(MAKE) -C $(LIBFT_DIR) fclean
 				$(MAKE) -C $(LIBMLX_DIR) fclean
-				$(RM) -r $(OBJS)
+				$(RM) -r $(OBJ_DIR)
 				$(RM) $(NAME)
 
 re:				fclean all

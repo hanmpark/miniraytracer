@@ -1,37 +1,6 @@
 #include "mrt_render.h"
 #include "mrt_parsing.h"
 
-static t_fvec3 get_right(t_cam *cam)
-{
-	return (norm_fvec3(cross_fvec3(cam->align, cam->up)));
-}
-
-static void move_camera(t_mrt *v, double forward, double strafe)
-{
-	t_fvec3 right;
-
-	if (!v->fast_mode || (forward == 0.0 && strafe == 0.0))
-		return;
-	right = get_right(&v->cam);
-	v->cam.pos = add_fvec3(v->cam.pos,
-						   mult_double_fvec3(v->cam.align, forward * MOVE_STEP));
-	v->cam.pos = add_fvec3(v->cam.pos,
-						   mult_double_fvec3(right, strafe * MOVE_STEP));
-	set_cam_screen(&v->cam);
-}
-
-static void rotate_camera_keys(t_mrt *v, double dyaw, double dpitch)
-{
-	if (!v->fast_mode)
-		return;
-	v->cam.yaw += dyaw;
-	v->cam.pitch += dpitch;
-	if (v->cam.pitch > (PI / 2.0 - 0.01))
-		v->cam.pitch = PI / 2.0 - 0.01;
-	if (v->cam.pitch < -(PI / 2.0 - 0.01))
-		v->cam.pitch = -(PI / 2.0 - 0.01);
-	update_cam_orientation(&v->cam);
-}
 
 static void set_fast_mode(t_mrt *v, bool enabled)
 {
@@ -60,7 +29,6 @@ static int event_destroy(t_mrt *v)
 	{
 		v->threads[i].kill = true;
 		i++;
-		// printf("debug %d\n", i);
 	}
 	pthread_mutex_unlock(&v->secu_mutex);
 	launch_render(v);
@@ -87,50 +55,48 @@ static int event_destroy(t_mrt *v)
 
 static int event_keyboard(int keycode, t_mrt *v)
 {
-	double forward;
-	double strafe;
-
 	if (keycode == KEY_ESC)
+	{
 		event_destroy(v);
-	if (keycode == KEY_F)
+	}
+	else if (keycode == KEY_F)
 	{
 		set_fast_mode(v, !v->fast_mode);
 		launch_render(v);
 	}
 	else if (v->fast_mode == true)
 	{
-		forward = 0.0;
-		strafe = 0.0;
 		if (keycode == KEY_W)
-			forward = 1.0;
+			v->cam.pos.y += MOVE_STEP;
 		else if (keycode == KEY_S)
-			forward = -1.0;
+			v->cam.pos.y -= MOVE_STEP;
 		else if (keycode == KEY_D)
-			strafe = 1.0;
+			v->cam.pos.x += MOVE_STEP;
 		else if (keycode == KEY_A)
-			strafe = -1.0;
+			v->cam.pos.x -= MOVE_STEP;
 		else if (keycode == KEY_SPACE)
-		{
-			move_camera(v, 0.0, 0.0);
 			v->cam.pos.z += MOVE_STEP;
-			set_cam_screen(&v->cam);
-		}
 		else if (keycode == KEY_CTRL)
-		{
-			move_camera(v, 0.0, 0.0);
 			v->cam.pos.z -= MOVE_STEP;
-			set_cam_screen(&v->cam);
-		}
-		if (forward != 0.0 || strafe != 0.0)
-			move_camera(v, forward, strafe);
+		else if (keycode == KEY_Q)
+			v->cam.lookat.y -= KEY_LOOK_STEP;
+		else if (keycode == KEY_E)
+			v->cam.lookat.y += KEY_LOOK_STEP;
+
 		else if (keycode == KEY_LEFT)
-			rotate_camera_keys(v, -KEY_LOOK_STEP, 0.0);
+			v->cam.lookat.z += KEY_LOOK_STEP;
 		else if (keycode == KEY_RIGHT)
-			rotate_camera_keys(v, KEY_LOOK_STEP, 0.0);
+			v->cam.lookat.z -= KEY_LOOK_STEP;
 		else if (keycode == KEY_UP)
-			rotate_camera_keys(v, 0.0, KEY_LOOK_STEP);
+			v->cam.lookat.x += KEY_LOOK_STEP;
 		else if (keycode == KEY_DOWN)
-			rotate_camera_keys(v, 0.0, -KEY_LOOK_STEP);
+			v->cam.lookat.x -= KEY_LOOK_STEP;
+		else
+			return (0);
+		
+		printf("pos can %f %f %f\n", v->cam.pos.x, v->cam.pos.y, v->cam.pos.z);
+		set_cam_data(&v->cam);
+		set_cam_screen(&v->cam);
 		launch_render(v);
 	}
 	return (0);

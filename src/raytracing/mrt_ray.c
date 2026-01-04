@@ -63,8 +63,6 @@ bool	cast_light_ray(t_mrt *v, t_light light, t_ray lightray, t_hit hit)
 	double	lightdist;
 	int		i;
 
-	// if (v->fast_mode)
-	// 	return (true);
 	lightdist = len_fvec3(sub_fvec3(light.pos, hit.close_pos));
 	no_hit = true;
 	i = 0;

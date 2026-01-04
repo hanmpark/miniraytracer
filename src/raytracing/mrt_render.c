@@ -102,7 +102,7 @@ void	*thread_render(void *arg)
 			x = 0;
 			while (x < SCR_WID)
 			{
-				sample_x = x + (step > 1 ? (step >> 1) : 0);
+				sample_x = x + (step > 1 ? (step / 2.0) : 0);
 				sample_y = y + (step > 1 ? (step / 2.0) : 0);
 				if (sample_x >= SCR_WID)
 					sample_x = SCR_WID - 1;
@@ -121,7 +121,6 @@ void	*thread_render(void *arg)
 					{
 						if (clu->v->refresh_step >= REFRESH_STEP) 
 						{
-							// send a pulse to render one time to main
 							pthread_cond_signal(&clu->v->main_cond);
 							clu->v->refresh_step = 0;
 						}

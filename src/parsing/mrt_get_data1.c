@@ -57,17 +57,17 @@ bool	get_boolean(char *str, bool *setbool)
 
 bool	check_norm(t_fvec3 *vec)
 {
-	double	len;
+	// double	len;
 
 	if ((vec->x < -1.0 || vec->x > 1.0) \
 		|| (vec->y < -1.0 || vec->y > 1.0) \
 		|| (vec->z < -1.0 || vec->z > 1.0))
 		return (error_bool(ERR_NORM));
-	len = len_fvec3(*vec);
-	if (len < EPSILON)
-		return (error_bool(ERR_NORM));
-	if (len < 0.999 || len > 1.001)
-		return (error_bool(ERR_NORM));
-	*vec = mult_double_fvec3(*vec, 1.0 / len);
+	// len = len_fvec3(*vec);
+	// if (len < EPSILON)
+	// 	return (error_bool(ERR_NORM));
+	// if (len < 0.999 || len > 1.001)
+	// 	return (error_bool(ERR_NORM));
+	// *vec = mult_double_fvec3(*vec, 1.0 / len);
 	return (true);
 }

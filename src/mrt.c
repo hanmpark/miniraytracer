@@ -8,6 +8,11 @@ static void	init_settings(t_mrt *v)
 	v->antialiasing = true;
 	v->pixel_step = PIXEL_STEP_DEFAULT;
 	v->max_ref_depth = MAX_REF_DEPTH_DEFAULT;
+
+	// v->fast_mode = true;
+	// v->antialiasing = false;
+	// v->pixel_step = PIXEL_STEP_FAST;
+	// v->max_ref_depth = 1;
 }
 
 static bool	launch(t_mrt *v)

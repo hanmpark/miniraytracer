@@ -2,14 +2,18 @@
 
 t_fvec3	color_cap(t_fvec3 color, int samples)
 {
-	double	inv;
+	// double	inv;
 
-	if (samples < 1)
-		samples = 1;
-	inv = 1.0 / (double)samples;
-	color.x = fmax(0.0, fmin(1.0, color.x * inv));
-	color.y = fmax(0.0, fmin(1.0, color.y * inv));
-	color.z = fmax(0.0, fmin(1.0, color.z * inv));
+	// if (samples < 1)
+	// 	samples = 1;
+	// inv = 1.0 / (double)samples;
+	// color.x = fmax(0.0, fmin(1.0, color.x * inv));
+	// color.y = fmax(0.0, fmin(1.0, color.y * inv));
+	// color.z = fmax(0.0, fmin(1.0, color.z * inv));
+	(void)samples;
+	color.x = fmax(0.0, fmin(1.0, color.x / SAMPLES_PER_PIXEL));
+	color.y = fmax(0.0, fmin(1.0, color.y / SAMPLES_PER_PIXEL));
+	color.z = fmax(0.0, fmin(1.0, color.z / SAMPLES_PER_PIXEL));
 	return (color);
 }
 

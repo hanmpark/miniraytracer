@@ -49,7 +49,7 @@ bool	parse_amb(t_mrt *v, char **args, int *o, int *l);
 bool	parse_cam(t_mrt *v, char **args, int *o, int *l);
 void	set_cam_data(t_cam *cam);
 void	set_cam_screen(t_cam *cam);
-void	update_cam_orientation(t_cam *cam);
+// void	update_cam_orientation(t_cam *cam);
 bool	parse_light(t_mrt *v, char **args, int *o, int *l);
 
 /* OBJECTS */

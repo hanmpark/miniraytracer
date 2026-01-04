@@ -45,7 +45,7 @@ t_ray	ray_apply_matrix(t_ray ray_cpy, const t_fmat4x4 m_ptr);
 t_ray	setup_light_ray(t_hit *hit, t_fvec3 lightdir);
 bool	cast_light_ray(t_mrt *v, t_light light, t_ray lightray, t_hit hit);
 bool	cast_reflection_ray(t_mrt *v, t_ray ray, t_hit *hit);
-void	update_cam_orientation(t_cam *cam);
+// void	update_cam_orientation(t_cam *cam);
 
 /* COLORS */
 

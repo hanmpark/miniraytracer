@@ -82,6 +82,7 @@ t_fvec3	new_fvec3(double x, double y, double z);
 
 /* UTILS */
 
+void	convert_radian(t_fvec3 *rot, bool is_cam);
 int		close_enough(double a, double b);
 double	solve_quadratic(double a, double b, double c, double ret);
 

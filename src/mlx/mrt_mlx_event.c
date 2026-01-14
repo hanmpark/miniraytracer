@@ -66,14 +66,30 @@ static int event_keyboard(int keycode, t_mrt *v)
 	}
 	else if (v->fast_mode == true)
 	{
+		t_fvec3	forward;
+		t_fvec3	right;
+		t_fvec3	world_up;
+
+		forward = norm_fvec3(v->cam.align);
+		forward.z = 0.0;
+		if (len_fvec3(forward) < EPSILON)
+			forward = norm_fvec3(v->cam.align);
+		else
+			forward = norm_fvec3(forward);
+		world_up = new_fvec3(0.0, 0.0, 1.0);
+		right = norm_fvec3(cross_fvec3(forward, world_up));
 		if (keycode == KEY_W)
-			v->cam.pos.y += MOVE_STEP;
+			v->cam.pos = add_fvec3(v->cam.pos, \
+				mult_double_fvec3(forward, MOVE_STEP));
 		else if (keycode == KEY_S)
-			v->cam.pos.y -= MOVE_STEP;
+			v->cam.pos = sub_fvec3(v->cam.pos, \
+				mult_double_fvec3(forward, MOVE_STEP));
 		else if (keycode == KEY_D)
-			v->cam.pos.x += MOVE_STEP;
+			v->cam.pos = add_fvec3(v->cam.pos, \
+				mult_double_fvec3(right, MOVE_STEP));
 		else if (keycode == KEY_A)
-			v->cam.pos.x -= MOVE_STEP;
+			v->cam.pos = sub_fvec3(v->cam.pos, \
+				mult_double_fvec3(right, MOVE_STEP));
 		else if (keycode == KEY_SPACE)
 			v->cam.pos.z += MOVE_STEP;
 		else if (keycode == KEY_CTRL)

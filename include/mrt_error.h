@@ -37,7 +37,7 @@
 # define ERR_NORM "Error\nValue must be in the range [-1, 1]\n"
 # define ERR_RATIO "Error\nRatio must be within [0.0, 1.0]\n"
 # define ERR_BOOL "Error\nBool must be in the range [-1, 1]\n"
-# define ERR_SPECULAR "Error\nShininess [0, 10] Reflection [0, 1]\n"
+# define ERR_SPECULAR "Error\nShininess [0, 256] Reflection [0, 1]\n"
 
 /* THREADS */
 

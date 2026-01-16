@@ -67,17 +67,24 @@ t_fvec3	raytracing_color(t_th *clu, t_ray incident_ray, t_hit hit)
 	t_fvec3	reflection_color;
 	t_fvec3	specular_color;
 	t_fvec3	pix;
+	t_hit	shade_hit;
 
-	diffuse_color = compute_diffuse_color(clu->v, hit);
+	shade_hit = hit;
+	if (dot_fvec3(shade_hit.close_normal, incident_ray.vec) > 0.0)
+		shade_hit.close_normal = mult_double_fvec3(\
+			shade_hit.close_normal, -1.0);
+	diffuse_color = compute_diffuse_color(clu->v, shade_hit);
 	specular_color = new_fvec3(0.0, 0.0, 0.0);
 	reflection_color = new_fvec3(0.0, 0.0, 0.0);
-	if (hit.close_obj->reflection > 0.0)
-		reflection_color = compute_reflection_color(clu, incident_ray, hit);
-	pix = mult_double_fvec3(reflection_color, hit.close_obj->reflection);
+	if (shade_hit.close_obj->reflection > 0.0)
+		reflection_color = compute_reflection_color(\
+			clu, incident_ray, shade_hit);
+	pix = mult_double_fvec3(reflection_color, shade_hit.close_obj->reflection);
 	pix = add_fvec3(pix, mult_double_fvec3(diffuse_color, \
-		1 - hit.close_obj->reflection));
-	if (hit.close_obj->shininess > 0.0)
-		specular_color = compute_specular_color(clu->v, incident_ray, hit);
+		1 - shade_hit.close_obj->reflection));
+	if (shade_hit.close_obj->shininess > 0.0)
+		specular_color = compute_specular_color(\
+			clu->v, incident_ray, shade_hit);
 	pix = add_fvec3(pix, specular_color);
 	return (pix);
 }

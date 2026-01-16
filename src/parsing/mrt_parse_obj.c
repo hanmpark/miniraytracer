@@ -2,7 +2,7 @@
 
 static bool	check_specular(const double shininess, const double reflection)
 {
-	return ((shininess >= 0.0 && shininess <= 10.0) \
+	return ((shininess >= 0.0 && shininess <= 256.0) \
 		&& (reflection >= 0.0 && reflection <= 1.0));
 }
 

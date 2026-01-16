@@ -23,18 +23,20 @@ double	light_intensity(t_mrt *v, t_light light, t_hit hit)
 static double	find_specular(t_ray lightray, t_ray ray, t_hit *hit)
 {
 	t_fvec3	reflectiondir;
-	t_fvec3	inc_ray;
-	t_fvec3	r;
+	t_fvec3	viewdir;
 	double	dot;
+	double	dot_nl;
 
-	r = mult_double_fvec3(hit->close_normal, \
-		2.0 * dot_fvec3(lightray.vec, hit->close_normal));
-	reflectiondir = norm_fvec3(sub_fvec3(lightray.vec, r));
-	inc_ray = norm_fvec3(ray.vec);
-	dot = dot_fvec3(reflectiondir, inc_ray);
+	dot_nl = dot_fvec3(lightray.vec, hit->close_normal);
+	if (dot_nl <= 0.0)
+		return (0.0);
+	reflectiondir = sub_fvec3(mult_double_fvec3(hit->close_normal, \
+		2.0 * dot_fvec3(lightray.vec, hit->close_normal)), lightray.vec);
+	reflectiondir = norm_fvec3(reflectiondir);
+	viewdir = norm_fvec3(mult_double_fvec3(ray.vec, -1.0));
+	dot = dot_fvec3(reflectiondir, viewdir);
 	if (dot > 0.0)
-		return (hit->close_obj->reflection * pow(dot, \
-			hit->close_obj->shininess));
+		return (pow(dot, hit->close_obj->shininess));
 	return (0.0);
 }
 

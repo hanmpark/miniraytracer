@@ -55,9 +55,9 @@
 
 /* SCREEN PARAMETERS */
 
-# define SCR_WID 680
-# define SCR_HGH 310
-# define NUM_THREADS 5
+# define SCR_WID 1080
+# define SCR_HGH 720
+# define NUM_THREADS 28
 # define MAX_REF_DEPTH_DEFAULT 100
 # define PIXEL_STEP_DEFAULT 1
 # define PIXEL_STEP_FAST 4

@@ -37,8 +37,10 @@ static int event_destroy(t_mrt *v)
 	{
 		if (pthread_join(v->threads[i].thread, NULL))
 		{
-			write(STDERR_FILENO, "pthread_join call fail event_destroy\n", 38);
-			ft_putnbr_fd(i,STDERR_FILENO);
+			if (write(STDERR_FILENO, \
+					"pthread_join call fail event_destroy\n", 38) == -1)
+				perror("write");
+			ft_putnbr_fd(i, STDERR_FILENO);
 		}
 		i++;
 	}

@@ -20,17 +20,40 @@ static void	hit_surface_normal(t_hit *hit, t_fvec3 ray, t_obj *o, t_type type)
 
 static double	side_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 {
+	double	a;
+	double	b;
+	double	c;
+	double	det;
+	double	root1;
+	double	root2;
 	double	root;
+	double	z_hit;
 
-	root = solve_quadratic(\
-		(dir.x * dir.x) + (dir.y * dir.y) - (dir.z * dir.z), \
-		2.0 * (pos.x * dir.x + pos.y * dir.y - pos.z * dir.z), \
-		(pos.x * pos.x) + (pos.y * pos.y) - (pos.z * pos.z), INFINITY);
+	a = (dir.x * dir.x) + (dir.y * dir.y) - (dir.z * dir.z);
+	b = 2.0 * (pos.x * dir.x + pos.y * dir.y - pos.z * dir.z);
+	c = (pos.x * pos.x) + (pos.y * pos.y) - (pos.z * pos.z);
+	det = (b * b) - (4.0 * a * c);
+	if (det < 0.0)
+		return (INFINITY);
+	det = sqrt(det);
+	root1 = (-b - det) / (2.0 * a);
+	root2 = (-b + det) / (2.0 * a);
+	root = INFINITY;
+	if (root1 > 0.0)
+	{
+		z_hit = pos.z + root1 * dir.z;
+		if (z_hit >= -1.0 && z_hit <= 1.0)
+			root = root1;
+	}
+	if (root2 > 0.0 && (root2 < root || root == INFINITY))
+	{
+		z_hit = pos.z + root2 * dir.z;
+		if (z_hit >= -1.0 && z_hit <= 1.0)
+			root = root2;
+	}
 	if (root == INFINITY)
 		return (INFINITY);
 	*ray = add_fvec3(pos, mult_double_fvec3(dir, root));
-	if (ray->z <= -1.0 || ray->z >= 1.0)
-		return (INFINITY);
 	return (root);
 }
 

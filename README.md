@@ -21,10 +21,7 @@ Here are examples of what our `RT` can do:
 </div>
 
 <div align="center">
-    <video controls muted loop width="720">
-        <source src="https://github.com/hanmpark/miniraytracer/blob/master/rt.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <img src="https://github.com/hanmpark/miniraytracer/blob/master/rt.gif" alt="RT interaction gif"/>
 </div>
 
 ## 🛠️ Features

@@ -47,7 +47,7 @@
 
 /* USAGE */
 
-# define ERR_USAGE "usage: ./miniRT <path/to/scene.rt>\n"
+# define ERR_USAGE "usage: ./rt <path/to/scene.rt>\n"
 
 /* ERROR MESSAGE MRT/LAUNCH */
 

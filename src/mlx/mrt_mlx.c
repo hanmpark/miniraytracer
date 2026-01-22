@@ -14,7 +14,7 @@ bool	init_mrt_mlx(t_mrt *v)
 	v->mlx_ptr = mlx_init();
 	if (v->mlx_ptr == NULL)
 		return (error_bool(ERR_MLX));
-	v->mlx_win = mlx_new_window(v->mlx_ptr, SCR_WID, SCR_HGH, "minirt");
+	v->mlx_win = mlx_new_window(v->mlx_ptr, SCR_WID, SCR_HGH, "RT");
 	if (v->mlx_win == NULL)
 		return (free_launch(v, false));
 	v->mlx_img.img = mlx_new_image(v->mlx_ptr, SCR_WID, SCR_HGH);

@@ -21,7 +21,7 @@ endif
 
 # ------------------------------- COMPILER FLAGS ------------------------------- #
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -O3 -ffast-math
+CFLAGS			= -Wall -Wextra -Werror -ffast-math
 
 UTILS_FLAGS		= -lm -Llib -lft -lpthread
 

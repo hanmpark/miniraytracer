@@ -34,25 +34,25 @@ static double	side_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 	c = (pos.x * pos.x) + (pos.y * pos.y) - (pos.z * pos.z);
 	det = (b * b) - (4.0 * a * c);
 	if (det < 0.0)
-		return (INFINITY);
+		return (MRT_NO_HIT);
 	det = sqrt(det);
 	root1 = (-b - det) / (2.0 * a);
 	root2 = (-b + det) / (2.0 * a);
-	root = INFINITY;
+	root = MRT_NO_HIT;
 	if (root1 > 0.0)
 	{
 		z_hit = pos.z + root1 * dir.z;
 		if (z_hit >= -1.0 && z_hit <= 1.0)
 			root = root1;
 	}
-	if (root2 > 0.0 && (root2 < root || root == INFINITY))
+	if (root2 > 0.0 && (root2 < root || root == MRT_NO_HIT))
 	{
 		z_hit = pos.z + root2 * dir.z;
 		if (z_hit >= -1.0 && z_hit <= 1.0)
 			root = root2;
 	}
-	if (root == INFINITY)
-		return (INFINITY);
+	if (root == MRT_NO_HIT)
+		return (MRT_NO_HIT);
 	*ray = add_fvec3(pos, mult_double_fvec3(dir, root));
 	return (root);
 }
@@ -64,19 +64,19 @@ static double	cap_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 	double	root2;
 
 	if (close_enough(dir.z, 0.0))
-		return (INFINITY);
+		return (MRT_NO_HIT);
 	root1 = (pos.z + 1.0) / -dir.z;
 	root2 = (pos.z - 1.0) / -dir.z;
-	root = INFINITY;
+	root = MRT_NO_HIT;
 	if (root1 > 0.0)
 		root = root1;
 	if (root2 > 0.0 && root2 < root)
 		root = root2;
-	if (root == INFINITY)
-		return (INFINITY);
+	if (root == MRT_NO_HIT)
+		return (MRT_NO_HIT);
 	*ray = add_fvec3(pos, mult_double_fvec3(dir, root));
 	if (sqrt((ray->x * ray->x) + (ray->y * ray->y)) >= 1.0)
-		return (INFINITY);
+		return (MRT_NO_HIT);
 	return (root);
 }
 
@@ -89,7 +89,7 @@ static bool	cone_root_normal(t_hit *hit, t_fvec3 pos, t_fvec3 dir, t_obj *o)
 
 	root_cone = side_isect(pos, dir, &new_coneray);
 	root_cap = cap_isect(pos, dir, &new_capray);
-	if (root_cone == INFINITY && root_cap == INFINITY)
+	if (root_cone == MRT_NO_HIT && root_cap == MRT_NO_HIT)
 		return (false);
 	if (root_cone < root_cap)
 		hit_surface_normal(hit, new_coneray, o, SIDE);

@@ -45,7 +45,7 @@ bool	cast_reflection_ray(t_mrt *v, t_ray ray, t_hit *hit)
 	int		i;
 
 	found_obstruction = false;
-	hit->min_dist = INFINITY;
+	hit->min_dist = MRT_NO_HIT;
 	i = -1;
 	while (++i < v->nb_objs)
 	{

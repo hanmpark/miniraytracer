@@ -2,11 +2,13 @@
 # define MRT_MATH_H
 
 # include <math.h>
+# include <float.h>
 # include <stdbool.h>
 
 # define EPSILON		0.00001
 # define PI				3.14159265358979323846
 # define SHADOW_BIAS	0.001
+# define MRT_NO_HIT		DBL_MAX
 
 typedef enum e_mat_enum
 {

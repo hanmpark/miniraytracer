@@ -25,12 +25,12 @@ static double	side_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 	root = solve_quadratic(\
 		(dir.x * dir.x) + (dir.y * dir.y), \
 		2.0 * (pos.x * dir.x + pos.y * dir.y), \
-		(pos.x * pos.x) + (pos.y * pos.y) - 1.0, INFINITY);
-	if (root == INFINITY)
-		return (INFINITY);
+		(pos.x * pos.x) + (pos.y * pos.y) - 1.0, MRT_NO_HIT);
+	if (root == MRT_NO_HIT)
+		return (MRT_NO_HIT);
 	*ray = add_fvec3(pos, mult_double_fvec3(dir, root));
 	if (fabs(ray->z) >= 1.0)
-		return (INFINITY);
+		return (MRT_NO_HIT);
 	return (root);
 }
 
@@ -41,7 +41,7 @@ static double	cap_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 	double	root2;
 
 	if (close_enough(dir.z, 0.0))
-		return (INFINITY);
+		return (MRT_NO_HIT);
 	root1 = (pos.z - 1.0) / -dir.z;
 	root2 = (pos.z + 1.0) / -dir.z;
 	if (root1 > 0.0 && root1 < root2)
@@ -49,10 +49,10 @@ static double	cap_isect(t_fvec3 pos, t_fvec3 dir, t_fvec3 *ray)
 	else if (root2 > 0.0)
 		root = root2;
 	else
-		return (INFINITY);
+		return (MRT_NO_HIT);
 	*ray = add_fvec3(pos, mult_double_fvec3(dir, root));
 	if (sqrt((ray->x * ray->x) + (ray->y * ray->y)) >= 1.0)
-		return (INFINITY);
+		return (MRT_NO_HIT);
 	return (root);
 }
 
@@ -65,7 +65,7 @@ static bool	cylinder_root(t_hit *hit, t_fvec3 pos, t_fvec3 dir, t_obj *o)
 
 	root_cyl = side_isect(pos, dir, &new_cylray);
 	root_cap = cap_isect(pos, dir, &new_capray);
-	if (root_cyl == INFINITY && root_cap == INFINITY)
+	if (root_cyl == MRT_NO_HIT && root_cap == MRT_NO_HIT)
 		return (false);
 	if (root_cyl < root_cap)
 		hit_surface_normal(hit, new_cylray, o, SIDE);

@@ -7,7 +7,7 @@ static t_fvec3	pixel_color(t_th *clu, t_ray camray)
 	int		i;
 
 	color = new_fvec3(0.0, 0.0, 0.0);
-	hit.min_dist = INFINITY;
+	hit.min_dist = MRT_NO_HIT;
 	i = 0;
 	while (i < clu->v->nb_objs)
 	{
@@ -119,7 +119,7 @@ void	*thread_render(void *arg)
 					pthread_mutex_unlock(&clu->v->secu_mutex);
 					if (clu->id == 0)
 					{
-						if (clu->v->refresh_step >= REFRESH_STEP) 
+						if (clu->v->refresh_step >= REFRESH_STEP)
 						{
 							pthread_cond_signal(&clu->v->main_cond);
 							clu->v->refresh_step = 0;
